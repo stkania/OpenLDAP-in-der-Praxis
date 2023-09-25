@@ -1,0 +1,12 @@
+dn: olcDatabase={2}mdb,cn=config
+changetype: modify
+add: olcAccess
+olcAccess: {0}to *
+   by dn.exact="uid=lloadd,ou=users,dc=example,dc=net"  read
+   by * break
+-
+add: olcLimits
+olcLimits: {0} dn.exact="uid=lloadd,ou=users,dc=example,dc=net"
+   time=unlimited
+   size=unlimited
+

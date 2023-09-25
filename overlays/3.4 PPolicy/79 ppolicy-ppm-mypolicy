@@ -1,0 +1,13 @@
+minQuality 8
+checkRDN 0
+checkAttributes mail
+forbiddenChars
+maxConsecutivePerClass 3
+useCracklib 1
+cracklibDict /var/cache/cracklib/cracklib_dict
+class-upperCase ABCDEFGHIJKLMNOPQRSTUVWXYZ 2 1 3
+class-lowerCase abcdefghijklmnopqrstuvwxyz 2 1 3
+class-digit 0123456789 1 1 0
+class-special @=?,.;:-+*/
+class-umlaut äöüÄÖÜß 0 1 0
+

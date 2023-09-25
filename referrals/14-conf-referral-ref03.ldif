@@ -1,0 +1,5 @@
+dn: dc=referral,dc=example,dc=net
+ObjectClass: referral
+objectClass: extensibleObject
+dc: referral
+ref: ldap://ldap-ref03.example.net/dc=referral%2Cdc=example%2Cdc=net??sub

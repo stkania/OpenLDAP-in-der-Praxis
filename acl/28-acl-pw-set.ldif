@@ -1,0 +1,22 @@
+dn: olcDatabase={2}mdb,cn=config
+changetype: modify
+delete: olcAccess
+olcAccess: {1}
+-
+add: olcAccess
+olcAccess: {1}to attrs=userPassword
+  by dn.exact=uid=ldap-admin,ou=users,dc=example,dc=net write
+  by group/GroupOfNames/member=cn=pw-set,ou=users,dc=example,dc=net write
+  by self write
+  by anonymous auth
+  by * none
+-
+delete: olcAccess
+olcAccess: {2}
+-
+add: olcAccess
+olcAccess: {2}to attrs=shadowLastChange
+  by dn.exact=uid=ldap-admin,ou=users,dc=example,dc=net write
+  by group/GroupOfNames/member=cn=pw-set,ou=users,dc=example,dc=net write
+  by self write
+  by * none

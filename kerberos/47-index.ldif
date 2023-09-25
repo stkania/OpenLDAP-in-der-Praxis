@@ -1,0 +1,7 @@
+dn: olcDatabase={2}mdb,cn=config
+changetype: modify
+add: olcDbIndex
+olcDbIndex: krbPrincipalName eq
+-
+add: olcDbIndex
+olcDbIndex: krbPwdPolicyReference eq

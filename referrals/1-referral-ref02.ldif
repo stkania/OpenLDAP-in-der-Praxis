@@ -1,0 +1,5 @@
+dn: o=site01,dc=example,dc=net
+ObjectClass: referral
+objectClass: extensibleObject
+o: site01
+ref: ldap://ldap-ref02.example.net/o=site01%2Cdc=example%2Cdc=net??sub

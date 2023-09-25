@@ -1,0 +1,3 @@
+dn: olcOverlay=otp,olcDatabase={2}mdb,cn=config
+objectClass: olcOverlayConfig
+olcOverlay: otp

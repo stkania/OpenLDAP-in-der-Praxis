@@ -1,0 +1,4 @@
+dn: olcOverlay={0}syncprov,olcDatabase={2}mdb,cn=config
+changetype: modify
+add: olcSpCheckpoint
+olcSpCheckpoint: 1 60

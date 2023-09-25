@@ -1,0 +1,7 @@
+dn: olcDatabase={2}mdb,cn=config
+changetype: modify
+add: olcAccess
+olcAccess: {4} to dn.exact="cn=u1 verw,ou=users,ou=verwaltung,ou=firma,dc=example,dc=net"
+  by peername.regex=192\.168\.56\.201 read
+  by peername.regex=192\.168\.56\.12 read
+  by * none

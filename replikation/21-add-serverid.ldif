@@ -1,0 +1,6 @@
+dn: cn=config
+changetype: modify
+replace: olcServerID
+olcServerID: 1 ldaps://provider02.example.net
+olcServerID: 2 ldaps://provider03.example.net
+olcServerID: 3 ldaps://provider04.example.net

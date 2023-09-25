@@ -1,0 +1,8 @@
+dn: olcOverlay=valsort,olcDatabase={2}mdb,cn=config
+changetype: add
+objectClass: olcOverlayConfig
+objectClass: olcValSortConfig
+olcOverlay: valsort
+olcValSortAttr: member dc=example,dc=net alpha-ascend
+olcValSortAttr: givenName dc=example,dc=net alpha-ascend
+olcValSortAttr: postalCode dc=example,dc=net alpha-ascend

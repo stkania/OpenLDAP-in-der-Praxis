@@ -1,0 +1,4 @@
+dn: cn=u1 verw,ou=users,ou=verwaltung,ou=firma,dc=example,dc=net
+changetype: modify
+add: Manager
+Manager: cn=verw al,ou=users,ou=verwaltung,ou=firma,dc=example,dc=net

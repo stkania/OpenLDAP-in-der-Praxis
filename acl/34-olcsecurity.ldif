@@ -1,0 +1,4 @@
+dn: cn=config
+changetype: modify
+replace: olcSecurity
+olcSecurity: ssf=1 tls=256

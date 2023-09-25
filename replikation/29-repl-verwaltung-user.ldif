@@ -1,0 +1,6 @@
+dn: uid=repl-verwaltung,ou=users,dc=example,dc=net
+objectClass: account
+objectClass: simpleSecurityObject
+objectClass: top
+uid: repl-verwaltung
+userPassword: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$dnNkYmZkYnp0cnZzZTZ6cjU3Nno$74Wc4wwde/K8aJpQwS2ihgrWk0pNY3LAI8FeWY+eipc

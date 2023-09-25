@@ -1,0 +1,21 @@
+; SRV-records für ldap port 389
+_ldap._tcp.example.net. IN SRV 10 50 389 provider01.example.net.
+;;_ldap._tcp.example.net. IN SRV 10 50 389 provider02.example.net.
+;;_ldap._tcp.example.net. IN SRV 20 75 389 provider03.example.net.
+;;_ldap._tcp.example.net. IN SRV 20 25 389 provider04.example.net.
+;;_ldap._tcp.example.net. IN SRV 20 25 389 consumer01.example.net.
+;;_ldap._tcp.example.net. IN SRV 20 25 389 consumer02.example.net.
+
+; SRV-records für ldap port 636
+_ldaps._tcp.example.net. IN SRV 10 50 636 provider01.example.net.
+;;_ldaps._tcp.example.net. IN SRV 10 50 636 provider02.example.net.
+;;_ldaps._tcp.example.net. IN SRV 20 75 636 provider03.example.net.
+;;_ldaps._tcp.example.net. IN SRV 20 25 636 provider04.example.net.
+;;_ldaps._tcp.example.net. IN SRV 20 25 389 consumer01.example.net.
+;;_ldaps._tcp.example.net. IN SRV 20 25 389 consumer02.example.net.
+
+; SRV-records für pwldaps port 636
+_pwldaps._tcp.example.net. IN SRV 10 50 636 provider01.example.net.
+;;_pwldaps._tcp.example.net. IN SRV 10 50 636 provider02.example.net.
+;;_pwldaps._tcp.example.net. IN SRV 20 75 636 provider03.example.net.
+;;_pwldaps._tcp.example.net. IN SRV 20 25 636 provider04.example.net.

@@ -1,0 +1,4 @@
+dn: cn=module{0},cn=config
+changetype: modify
+add: olcModuleload
+olcModuleLoad: back_ldap.la

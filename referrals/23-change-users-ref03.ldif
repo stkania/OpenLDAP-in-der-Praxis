@@ -1,0 +1,4 @@
+dn: ou=users,dc=referral,dc=example,dc=net
+changetype: modify
+replace: description
+description: "Das sind die User"

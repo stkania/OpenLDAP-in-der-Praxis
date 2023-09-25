@@ -1,0 +1,94 @@
+dn: cn=benutzer,ou=groups,dc=example,dc=net
+objectClass: posixGroup
+gidNumber: 10000
+cn: benutzer
+
+dn: uid=u1,ou=users,dc=example,dc=net
+objectClass: posixAccount
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+loginShell: /bin/bash
+homeDirectory: /home/u1
+gidNumber: 10000
+uid: u1
+cn: user 1
+userPassword:: $argon2i$v=19$m=4096,t=3,p=1$4oCdc2FsdHNhbHRzYWx0c2FsdOKAnQ$lkpaRI/mgLUwziwi/3/PRKxoRHrBoEfwg1RB+Inwqgc
+uidNumber: 10000
+sn: 1
+givenName: user
+
+dn: uid=u2,ou=users,dc=example,dc=net
+objectClass: posixAccount
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+loginShell: /bin/bash
+homeDirectory: /home/u2
+gidNumber: 10000
+uid: u2
+cn: User 2
+userPassword:: $argon2i$v=19$m=4096,t=3,p=1$4oCdc2FsdHNhbHRzYWx0c2FsdHnigJ0$gfNbRryMdQMuy035XsscaLR1WpuM3JfSLF5SICOeniI=
+uidNumber: 10001
+sn: 2
+givenName: User
+
+dn: uid=u3,ou=users,dc=example,dc=net
+objectClass: posixAccount
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+loginShell: /bin/bash
+homeDirectory: /home/u3
+gidNumber: 10000
+uid: u3
+cn: User 3
+userPassword:: $argon2i$v=19$m=4096,t=3,p=1$4oCdc2FsdHNhbHRzYWx0eXNhbHR54oCd$ZWG6w6/PeJNlqjsgwT2X3JH1F02M/UEu/mvBLoWZQPk=
+uidNumber: 10002
+sn: 3
+givenName: User
+
+dn: uid=u4,ou=users,dc=example,dc=net
+objectClass: posixAccount
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+loginShell: /bin/bash
+homeDirectory: /home/u4
+gidNumber: 10000
+uid: u4
+cn: User 4
+userPassword:: $argon2i$v=19$m=4096,t=3,p=1$4oCdc2FsdHNhbHR5c2FsdHlzYWx0eeKAnQ$njk04Ufc9ZSmzB68gAok6s9hF2H7aNqXAcGQoD/tyso=
+uidNumber: 10003
+sn: 4
+givenName: User
+
+dn: uid=u5,ou=users,dc=example,dc=net
+objectClass: posixAccount
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+loginShell: /bin/bash
+homeDirectory: /home/u5
+gidNumber: 10000
+uid: u5
+cn: User 5
+userPassword:: $argon2i$v=19$m=4096,t=3,p=1$4oCdc2FsdHlzYWx0eXNhbHR5c2FsdHnigJ0$uCWTCFCsYF847+xen2x2EuL1eU8d8kdl9SFzZ7gtZ4I=
+uidNumber: 10004
+sn: 5
+givenName: User
+
+dn: cn=Namen,ou=groups,dc=example,dc=net
+cn: Namen
+objectClass: groupOfNames
+member: uid=u1,ou=users,dc=example,dc=net
+
+dn: cn=unique,ou=groups,dc=example,dc=net
+cn: unique
+objectClass: groupOfUniqueNames
+uniqueMember: uid=u2,ou=users,dc=example,dc=net
+
+dn: cn=urls,ou=groups,dc=example,dc=net
+cn: urls
+objectClass: groupOfURLs
+memberURL: uid=u3,ou=users,dc=example,dc=net

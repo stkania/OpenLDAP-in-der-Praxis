@@ -1,0 +1,11 @@
+service kprop
+{
+socket_type = stream
+wait = no
+user = root
+server = /usr/sbin/kpropd
+only_from = 192.168.56.81
+log_on_success = PID HOST EXIT DURATION
+log_on_failure = PID HOST
+disable = no
+}

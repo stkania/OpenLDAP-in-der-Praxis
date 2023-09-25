@@ -1,0 +1,16 @@
+dn: cn=module{0},cn=config
+changetype: modify
+add: olcModuleLoad
+olcModuleLoad: dds.la
+
+dn: olcOverlay=dds,olcDatabase={2}mdb,cn=config
+changetype: add
+objectClass: olcOverlayConfig
+objectClass: olcDDSConfig
+olcOverlay: dds
+olcDDSmaxTtl: 1d
+olcDDSminTtl: 30s
+olcDDSdefaultTtl: 60s
+olcDDSinterval: 5s
+olcDDStolerance: 1s
+olcDDSmaxDynamicObjects: 10

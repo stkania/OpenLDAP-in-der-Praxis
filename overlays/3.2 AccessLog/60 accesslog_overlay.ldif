@@ -1,0 +1,11 @@
+dn: olcOverlay=accesslog,olcDatabase={2}mdb,cn=config
+changetype: add
+objectClass: olcAccessLogConfig
+objectClass: olcOverlayConfig
+olcAccessLogDB: cn=myaccesslog
+olcOverlay: accesslog
+olcAccessLogOps: reads writes
+olcAccessLogOld: (objectclass=inetOrgPerson)
+olcAccessLogOldAttr: givenName sn telephoneNumber mail
+olcAccessLogPurge: 28+00:00 00+01:00
+olcAccessLogSuccess: FALSE

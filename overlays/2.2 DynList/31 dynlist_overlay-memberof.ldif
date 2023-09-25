@@ -1,0 +1,6 @@
+dn: olcOverlay=dynlist,olcDatabase={2}mdb,cn=config
+changetype: add
+objectClass: olcDynamicList
+objectClass: olcOverlayConfig
+olcOverlay: dynlist
+olcDlAttrSet: groupOfURLs memberURL member+memberOf@groupOfNames

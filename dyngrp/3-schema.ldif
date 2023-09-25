@@ -1,0 +1,16 @@
+dn: cn=stkaPosixExtension,cn=schema,cn=config
+objectClass: olcSchemaConfig
+cn: stkaPosixExtension
+olcObjectClasses: ( 1.3.6.1.4.1.23456.1.2.1
+  NAME 'stkaPosixGroup'
+  DESC 'advanced PosixGroup for dynamic use'
+  SUP top
+  AUXILIARY
+  MUST ( cn $ gidNumber )
+  MAY ( userPassword $ memberUid $ description ) )
+olcObjectClasses: ( 1.3.6.1.4.1.23456.1.2.2
+  NAME 'stkaPosixAccount'
+  DESC 'advanced PosixAccount for dynamic use'
+  SUP posixAccount
+  AUXILIARY
+  MAY ( memberUID ) )

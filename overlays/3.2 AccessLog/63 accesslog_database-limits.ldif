@@ -1,0 +1,4 @@
+dn: olcDatabase={3}mdb,cn=config 
+changetype: modify
+add: olcLimits
+olcLimits: {0} dn.exact="cn=admin,dc=example,dc=net"  time=unlimited  size=unlimited

@@ -1,0 +1,11 @@
+dn: cn=config
+changetype: modify
+add: olcTLSCertificateFile
+olcTLSCertificateFile: /opt/symas/etc/openldap/example-net-cert.pem
+-
+add: olcTLSCertificateKeyFile
+olcTLSCertificateKeyFile: /opt/symas/etc/openldap/example-net-key.pem
+-
+add: olcTLSCACertificateFile
+olcTLSCACertificateFile: /opt/symas/etc/openldap/cacert.pem
+

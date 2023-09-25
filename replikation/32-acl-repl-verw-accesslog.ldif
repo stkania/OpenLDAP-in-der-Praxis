@@ -1,0 +1,10 @@
+dn: olcDatabase={3}mdb,cn=config
+changetype: modify
+delete: olcAccess
+olcAccess: {0}
+-
+add: olcAccess
+olcAccess: to dn.subtree="cn=accesslog"
+  by dn.exact="cn=admin,dc=example,dc=net" read
+  by dn.exact="uid=repl-user,ou=users,dc=example,dc=net" read
+  by dn.exact="uid=repl-verwaltung,ou=users,dc=example,dc=net" read

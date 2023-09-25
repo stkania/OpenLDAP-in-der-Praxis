@@ -1,0 +1,24 @@
+dn: olcDatabase={2}mdb,cn=config
+changetype: modify
+replace: olcUpdateref
+olcUpdateref: "ldaps://provider01.example.net"
+
+dn: olcOverlay=i{0}chain,olcDatabase={-1}frontend,cn=config
+changetype: add
+objectClass: olcOverlayConfig
+objectClass: olcChainConfig
+olcOverlay: {0}chain
+olcChainReturnError: TRUE
+
+dn: olcDatabase={0}ldap,olcOverlay={0}chain,olcDatabase={-1}frontend,cn=config
+changetype: add
+objectClass: olcLDAPConfig
+objectClass: olcChainDatabase
+olcDatabase: {0}ldap
+olcDbURI: "ldaps://provider01.example.net"
+olcDbRebindAsUser: TRUE
+olcDbIDAssertBind: bindmethod=simple
+  binddn="uid=chain-user,ou=users,dc=example,dc=net"
+  credentials=geheim
+  mode=self
+  flags=prescriptive,proxy-authz-non-critical

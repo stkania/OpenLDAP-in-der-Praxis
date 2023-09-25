@@ -1,0 +1,6 @@
+dn: uid=lam-user,ou=users,dc=example,dc=net
+objectClass: account
+objectClass: simpleSecurityObject
+objectClass: top
+uid: lam-user
+userPassword: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$c2RmZGZnZmRzIGZnZmRmc2dzZGZnZjU2$Unn50yLICqS5X1cli7wNLfmJXA2v9CXqtseMYOUOWTk

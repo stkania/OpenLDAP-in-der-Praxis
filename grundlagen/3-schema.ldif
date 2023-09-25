@@ -1,0 +1,112 @@
+# Schema for OpenLDAP-Book about Customers                                      
+#                                                                           
+# Last change: January  26, 2023                                         
+#                                                                           
+# Created by: Stefan Kania <stefan@kania-online.de>                         
+#                                                                         
+# General guideline:                                                        
+# 1. The language in this file is english                                   
+# 2. Every OID in this file must look like this: ns.a.b.c., where           
+#    ns - the official namespace of the Customer schema:                    
+#         1.3.6.1.4.1.12345                                                 
+#    a  - Reserved, must always be 1 for the  Customer schema.              
+#    b  - Entry type (1:attribute, 2:object)                                
+#    c  - Serial number (increased with every new entry)                    
+# 3. Every entry in this file MUST have a "DESC" field, containing a        
+#    suitable description!                                                  
+# 4. Attributes are listed in front of objects. All entries must be         
+#    ordered by their serial number.                                        
+# 5. All attributenames must start with 'stka-'                       
+#                                                                           
+# This schema is not depending on other schemas                                
+
+
+# Attribute type definitions
+
+attributetype (1.3.6.1.4.1.12345.1.1.1
+        NAME 'stka-CustomerName'        
+        DESC 'Name of the customer'  
+        EQUALITY caseIgnoreMatch      
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{100}
+        SINGLE-VALUE)                            
+
+attributetype (1.3.6.1.4.1.12345.1.1.2
+        NAME 'stka-CustomerPhoto'       
+        DESC 'JPEG photo of the Customer'
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.28
+        SINGLE-VALUE)                       
+
+attributetype (1.3.6.1.4.1.12345.1.1.3
+        NAME 'stka-CustomerStreetName'  
+        DESC 'streetname of the customer'
+        EQUALITY caseIgnoreListMatch      
+        SUBSTR caseIgnoreListSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.41
+        SINGLE-VALUE)                       
+
+attributetype (1.3.6.1.4.1.12345.1.1.4
+        NAME 'stka-CustomerZipCode'     
+        DESC 'Zipcode of the customer'   
+        EQUALITY caseIgnoreListMatch  
+        SUBSTR caseIgnoreListSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.41
+        SINGLE-VALUE)                       
+
+attributetype (1.3.6.1.4.1.12345.1.1.5
+        NAME 'stka-CustomerCity'        
+        DESC 'Cityname of the customer'
+        EQUALITY caseIgnoreListMatch    
+        SUBSTR caseIgnoreListSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.41
+        SINGLE-VALUE)                       
+
+attributetype (1.3.6.1.4.1.12345.1.1.6
+        NAME 'stka-CustomerCountry'     
+        DESC 'Countryname from the customer'
+        EQUALITY caseIgnoreListMatch         
+        SUBSTR caseIgnoreListSubstringsMatch 
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.41 
+        SINGLE-VALUE)                        
+
+attributetype (1.3.6.1.4.1.12345.1.1.7
+        NAME 'stka-CustomerPhonenumber' 
+        DESC 'Official phonenumber from the customer'
+        EQUALITY telephoneNumberMatch               
+        SUBSTR telephoneNumberSubstringsMatch       
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.50) 
+
+attributetype (1.3.6.1.4.1.12345.1.1.8
+        NAME 'stka-CustomerHomepage'    
+        DESC 'Official homepage of the customer'
+        EQUALITY caseIgnoreMatch                 
+        SUBSTR caseIgnoreSubstringsMatch         
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{255})
+
+attributetype (1.3.6.1.4.1.12345.1.1.9 
+        NAME  'stka-CustomerMail'        
+        DESC 'Mailaddress from the customer'
+        EQUALITY caseIgnoreMatch               
+        SUBSTR caseIgnoreSubstringsMatch       
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
+
+attributetype ( 1.3.6.1.4.1.12345.1.1.10 
+        NAME 'stka-GoodCustomer'
+        DESC 'If set to true then the customer is good'
+        EQUALITY booleanMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.7
+        SINGLE-VALUE )
+
+# Objectclass definitions
+
+objectclass ( 1.3.6.1.4.1.12345.1.2.1
+        NAME 'stka-Customer'
+        DESC 'Objectclass to manage all customers'
+        SUP top STRUCTURAL
+        MUST (stka-CustomerName $ stka-CustomerCity)
+        MAY (stka-CustomerPhoto $ stka-CustomerStreetName 
+             $ stka-CustomerZipCode 
+             $ stka-CustomerCity $ stka-CustomerCountry 
+             $ stka-CustomerPhonenumber 
+             $ stka-CustomerHomepage $ stka-CustomerMail 
+             $ stka-GoodCustomer))

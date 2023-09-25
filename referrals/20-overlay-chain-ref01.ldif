@@ -1,0 +1,22 @@
+dn: cn=module{0},cn=config
+changetype: modify
+add: olcModuleLoad
+olcModuleLoad: back_ldap.la
+
+dn: olcOverlay={0}chain,olcDatabase={-1}frontend,cn=config
+objectClass: olcOverlayConfig
+objectClass: olcChainConfig
+olcOverlay: {0}chain
+olcChainReturnError: TRUE
+
+dn: olcDatabase=ldap,olcOverlay={0}chain,olcDatabase={-1}frontend,cn=config
+objectClass: olcLDAPConfig
+objectClass: olcChainDatabase
+olcDatabase: ldap
+olcDbURI: ldap://ldap-ref03.example.net
+olcDbIDAssertBind: bindmethod=simple
+  binddn="cn=admin,dc=referral,dc=example,dc=net"
+  credentials=secret
+  mode=self
+  flags=non-prescriptive
+olcDbRebindAsUser: TRUE

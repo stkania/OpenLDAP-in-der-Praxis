@@ -1,0 +1,7 @@
+dn: cn=certuser,ou=users,dc=example,dc=net
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+cn: certuser
+sn: User

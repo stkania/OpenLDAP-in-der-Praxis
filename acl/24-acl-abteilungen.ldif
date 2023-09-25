@@ -1,0 +1,16 @@
+dn: olcDatabase={2}mdb,cn=config
+changetype: modify
+add: olcAccess
+olcAccess: {4}to "dn.sub=ou=verwaltung,ou=firma,dc=example,dc=net"
+  by "dn.children=ou=users,ou=verwaltung,ou=firma,dc=example,dc=net" read
+  by * none
+-
+add: olcAccess
+olcAccess: {5}to "dn.sub=ou=produktion,ou=firma,dc=example,dc=net"
+  by dn.children="ou=users,ou=produktion,ou=firma,dc=example,dc=net" read
+  by * none
+-
+add: olcAccess
+olcAccess: {6}to "dn.exact=ou=firma,dc=example,dc=net"
+  by users read
+  by * none

@@ -1,0 +1,13 @@
+[Unit]
+Description=k5start for generating tickets
+After=syslog.target network.target
+
+[Service]
+StartLimitInterval=5
+StartLimitBurst=10
+ExecStart=/usr/bin/k5start -k /tmp/krb5cc_998 -m 600 -o openldap -g openldap -U -f /opt/symas/etc/openldap/krb5-repl.keytab -K 10 -l 10h
+Restart=always
+RestartSec=120
+
+[Install]
+WantedBy=multi-user.target

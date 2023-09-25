@@ -1,0 +1,13 @@
+dn: olcBackend=lload,cn=config
+objectClass: olcBackendConfig
+objectClass: olcBkLloadConfig
+olcBackend: lload
+olcBkLloadBindconf: bindmethod=simple timeout=0 network-timeout=5 binddn="uid=lloadd,ou=users,dc=example,dc=net" credentials="geheim" keepalive=0:0:0 tcp-user-timeout=0 tls_cert="/opt/symas/etc/openldap/example-net-cert.pem" tls_key="/opt/symas//etc/openldap/example-net-key.pem" tls_cacert="/opt/symas/etc/openldap/cacert.pem"
+olcBkLloadListen: ldap://:1389
+olcBkLloadListen: ldaps://:1636
+olcBkLloadFeature: proxyauthz
+olcBkLloadIOThreads: 1
+olcBkLloadSockbufMaxClient: 16777215
+olcBkLloadSockbufMaxUpstream: 16777215
+olcBkLloadMaxPDUPerCycle: 10
+olcBkLloadIOTimeout: 10000

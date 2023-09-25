@@ -1,0 +1,8 @@
+dn: olcOverlay=homedir,olcDatabase={2}mdb,cn=config
+objectClass: olcOverlayConfig
+objectClass: olcHomeDirConfig
+olcOverlay: homedir
+olcSkeletonPath: /etc/skel
+olcMinimumUidNumber: 1000
+olcHomedirRegexp: ^(/home/[-_/a-z0-9]+)$ /ldapuser$1
+olcHomedirDeleteStyle: ARCHIVE

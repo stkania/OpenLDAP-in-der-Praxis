@@ -1,0 +1,22 @@
+dn: dc=example,dc=net
+objectClass: domain
+objectClass: dcObject
+dc: example
+
+dn: ou=users,dc=example,dc=net
+objectClass: organizationalUnit
+ou: users
+
+dn: ou=groups,dc=example,dc=net
+objectClass: organizationalUnit
+ou: groups
+
+dn: uid=ldap-admin,ou=users,dc=example,dc=net
+objectClass: simpleSecurityObject
+objectClass: account
+userPassword: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$ZHNmZ2Rzd3d3d3d3dmV3ZXc$y/NYtLpmf8BZn9n8sNQ/J5xr83M5ECPHmGwkbsvRTHs
+
+dn: uid=repl-user,ou=users,dc=example,dc=net
+objectClass: simpleSecurityObject
+objectClass: account
+userPassword: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$ZHNmZ2RzNDQ0NDR3dmV3ZXc$+kAfgMe1v1phLKP0kj7P8BEraZf5KCVPNm0OftBIGqo

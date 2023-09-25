@@ -1,0 +1,14 @@
+dn: olcDatabase=mdb,cn=config
+changetype: add
+objectClass: olcDatabaseConfig
+objectClass: olcMdbConfig
+olcDbDirectory: /var/symas/data2
+olcDatabase: mdb
+olcDbIndex: objectClass eq
+olcLastMod: TRUE
+olcSuffix: dc=example2,dc=net
+olcAccess: to dn.sub="dc=example2,dc=net" by * read
+olcAccess: to *  by * read
+olcRootDN: cn=admin,dc=example2,dc=net
+olcRootPW: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$Z2ZyaGdmcjU0NGVydDVyZWZ0NQ$awMWCasi7Kk3JKFwxEHz8sDdfAjAV0omDarGeVG64Kw
+

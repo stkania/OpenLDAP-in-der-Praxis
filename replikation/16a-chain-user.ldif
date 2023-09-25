@@ -1,0 +1,6 @@
+dn: uid=chain-user,ou=users,dc=example,dc=net
+objectClass: account
+objectClass: simpleSecurityObject
+objectClass: top
+uid: chain-user
+userPassword: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$Z2ZyaGdmcjU0NGVydDVyZWZ0NQ$awMWCasi7Kk3JKFwxEHz8sDdfAjAV0omDarGeVG64Kw

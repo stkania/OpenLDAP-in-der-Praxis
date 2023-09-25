@@ -1,0 +1,32 @@
+dn: dc=referral,dc=example,dc=net
+objectClass: domain
+objectClass: dcObject
+dc: referral
+
+dn: ou=users,dc=referral,dc=example,dc=net
+ou: users
+objectClass: organizationalUnit
+
+dn: ou=groups,dc=referral,dc=example,dc=net
+ou: groups
+objectClass: organizationalUnit
+
+dn: cn=benutzer-ref,ou=groups,dc=referral,dc=example,dc=net
+objectClass: posixGroup
+gidNumber: 500000
+cn: benutzer-ref
+
+dn: uid=uref,ou=users,dc=referral,dc=example,dc=net
+objectClass: posixAccount
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+loginShell: /bin/bash
+homeDirectory: /home/uref
+gidNumber: 500000
+userPassword: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$c2RnZjV4eHhmZ2RzOTc2ZHNh$qUH5o9wN0h0IX1cZCWXi74W1VrexkCoAE7zjGfAN3ec
+uid: uref
+cn: user ref
+uidNumber: 500000
+sn: ref
+givenName: user

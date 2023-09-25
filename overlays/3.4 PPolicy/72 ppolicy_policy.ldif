@@ -1,0 +1,23 @@
+dn: ou=policies,dc=example,dc=net
+changetype: add
+objectClass: organizationalUnit
+ou: policies
+
+dn: cn=default,ou=policies,dc=example,dc=net
+changetype: add
+objectClass: pwdPolicy
+objectClass: person
+cn: default
+pwdAttribute: userPassword
+pwdAllowUserChange: TRUE
+pwdExpireWarning: 1440
+pwdGraceAuthnLimit: 5
+pwdInHistory: 5
+pwdLockout: TRUE
+pwdFailureCountInterval: 300
+pwdLockoutDuration: 3600
+pwdMaxFailure: 5
+pwdMaxAge: 2678400
+pwdMinAge: 86400
+pwdMinLength: 8
+sn: OurDefaultPolicy

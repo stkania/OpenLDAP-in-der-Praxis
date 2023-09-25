@@ -1,0 +1,12 @@
+dn: olcDatabase={2}mdb,cn=config
+changetype: modify
+delete: olcAccess
+olcAccess: {1}
+
+dn: olcDatabase={2}mdb,cn=config
+changetype: modify
+add: olcAccess
+olcAccess: {2}to attrs=userPassword
+  by anonymous auth
+  by self write
+  by * none

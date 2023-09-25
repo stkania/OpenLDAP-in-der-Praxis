@@ -1,0 +1,5 @@
+dn: uid=proxy,dc=example,dc=net
+objectClass: account
+objectClass: simpleSecurityObject
+uid: proxy
+userPassword: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$ZGJmZGRkc3NzMTIzNDU$W+3A5630GWZE2pOfoT4pI8huoD9Uuss0tFw/CGmhIJ0

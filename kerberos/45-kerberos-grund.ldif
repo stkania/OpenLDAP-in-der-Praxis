@@ -1,0 +1,16 @@
+dn: ou=kerberos-adm,dc=example,dc=net
+ou: kerberos-adm
+objectClass: organizationalUnit
+objectClass: top
+
+dn: cn=kdc,ou=kerberos-adm,dc=example,dc=net
+cn: kdc
+objectClass: organizationalRole
+objectClass: simpleSecurityObject
+userPassword: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$dGdkcmdyZ3R0cmdyNTU3Nw$em9AhMUQ3rpEYQ5hlTg4p0xxOzv5N7JdqquP8WomJXE
+
+dn: cn=kadmin,ou=kerberos-adm,dc=example,dc=net
+cn: kadmin
+objectClass: organizationalRole
+objectClass: simpleSecurityObject
+userPassword: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$dGRmZ2hqaGdmZmdoNTU3Nw$EyJif86/wg19JP6gpor88JTC1PPCVtorxsqHAGMVvxg

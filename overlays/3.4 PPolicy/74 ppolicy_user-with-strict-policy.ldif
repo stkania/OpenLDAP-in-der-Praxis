@@ -1,0 +1,6 @@
+dn: cn=specialuser,ou=users,dc=example,dc=net
+objectClass: inetOrgPerson
+sn: Special
+cn: specialuser
+userPassword: $argon2i$v=19$m=4096,t=3,p=1$TXU3aWRXbmFTY2hAbGtlMDQ$lG1I1q+lQDLJ503B0qmi1qz6/hF1/WI+wDQIboUMXrU
+pwdPolicySubentry: cn=special,ou=policies,dc=example,dc=net

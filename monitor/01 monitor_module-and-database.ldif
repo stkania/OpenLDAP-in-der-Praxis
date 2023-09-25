@@ -1,0 +1,11 @@
+dn: cn=module{0},cn=config
+changetype: modify
+add: olcModuleLoad
+olcModuleLoad: back_monitor
+
+dn: olcDatabase=monitor,cn=config
+changetype: add
+objectClass: olcDatabaseConfig
+objectClass: olcConfig
+objectClass: top
+olcDatabase: monitor

@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.slapd.service: slapd
+  name: slapd
+  namespace: symas
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.slapd.service: slapd
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        io.slapd.service: slapd
+    spec:
+      containers:
+        - image: ollyauslippe/symas-openldap:1.0
+          name: slapd
+          ports:
+            - containerPort: 389
+              hostPort: 389
+              protocol: TCP
+            - containerPort: 636
+              hostPort: 636
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /var/symas/openldap-data
+              name: slapd-database
+      restartPolicy: Always
+      volumes:
+        - name: slapd-database
+          persistentVolumeClaim:
+            claimName: slapd-database-claim

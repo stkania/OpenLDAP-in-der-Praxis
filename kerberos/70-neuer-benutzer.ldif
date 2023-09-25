@@ -1,0 +1,13 @@
+dn: cn=ktom,ou=users,dc=example,dc=net
+cn: Kater Tom
+gidNumber: 10000
+givenName: Kater
+homeDirectory: /home/ktom
+loginShell: /bin/bash
+objectClass: posixAccount
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+sn: Tom
+uid: ktom
+uidNumber: 10500

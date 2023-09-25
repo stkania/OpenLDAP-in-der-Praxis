@@ -1,0 +1,5 @@
+dn: cn=jdoe,ou=users,dc=example,dc=net
+objectClass: inetOrgPerson
+sn: Doe
+cn: jdoe
+userPassword: Z2VoZWlt

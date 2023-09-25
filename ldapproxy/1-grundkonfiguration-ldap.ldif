@@ -1,0 +1,74 @@
+dn: cn=config
+objectClass: olcGlobal
+cn: config
+olcLogLevel: any
+olcPidFile: /var/symas/run/slapd.pid
+olcArgsFile: /var/symas/run/slapd.args
+olcToolThreads: 1
+
+dn: cn=schema,cn=config
+objectClass: olcSchemaConfig
+cn: schema
+
+dn: cn=module{0},cn=config
+objectClass: olcModuleList
+cn: module{0}
+olcModulePath: /opt/symas/lib/openldap
+olcModuleLoad: back_ldap
+olcModuleLoad: argon2
+
+include: file:///opt/symas/etc/openldap/schema/core.ldif
+include: file:///opt/symas/etc/openldap/schema/cosine.ldif
+include: file:///opt/symas/etc/openldap/schema/nis.ldif
+include: file:///opt/symas/etc/openldap/schema/inetorgperson.ldif
+include: file:///opt/symas/etc/openldap/schema/msuser.ldif
+
+dn: olcDatabase={-1}frontend,cn=config
+objectClass: olcDatabaseConfig
+objectClass: olcFrontendConfig
+olcDatabase: {-1}frontend
+olcSizeLimit: 500
+olcAccess: {0}to *
+  by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth manage
+  by * read
+olcPasswordHash: {ARGON2}
+
+dn: olcDatabase={0}config,cn=config
+objectClass: olcDatabaseConfig
+olcDatabase: {0}config
+olcRootDN: cn=admin,cn=config
+olcRootPW: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$cXdlcnJ0enV6dWlvMTIz$G/l0lynf7ygdz0tG+E7S1fBibsFs/L80AUSisiGl/v4
+olcAccess: {0}to *
+  by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth manage
+
+dn: olcDatabase={1}ldap,cn=config
+objectClass: olcDatabaseConfig
+objectClass: olcLDAPConfig
+olcDatabase: {1}ldap
+olcSuffix: dc=example1,dc=net
+olcRootDN: cn=admin,dc=example1,dc=net
+olcRootPW: {SSHA}+pLTl7GvT7v2SG9r2gTgZNlqCRXb0U0C
+olcDbURI: "ldaps://dc-net01.example.net:636"
+olcDbIDAssertBind: mode=none
+  flags=prescriptive,proxy-authz-critical 
+  bindmethod=simple
+  timeout=0
+  network-timeout=0
+  binddn="cn=proxy-user,cn=users,dc=example1,dc=net"
+  credentials="Passw0rd"
+  keepalive=0:0:0
+  tls_reqcert=never
+  tls_reqsan=allow
+olcDbIDAssertAuthzFrom: *
+olcDbRebindAsUser: TRUE
+olcDbChaseReferrals: FALSE
+olcDbProtocolVersion: 3
+olcMonitoring: FALSE
+olcReadOnly: TRUE
+
+dn: olcDatabase={2}monitor,cn=config
+objectClass: olcDatabaseConfig
+olcDatabase: {2}monitor
+olcAccess: {0}to dn.subtree="cn=monitor"
+  by dn.exact=cn=admin,cn=config read  
+  by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth read

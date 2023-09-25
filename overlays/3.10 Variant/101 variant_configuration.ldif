@@ -1,0 +1,18 @@
+dn: name=global-addr,olcOverlay={2}variant,olcDatabase={2}mdb,cn=config
+objectClass: olcVariantVariant
+olcVariantEntry: dc=example,dc=net
+
+dn: olcVariantVariantAttribute=postaladdress,name={0}global-addr,olcOverlay
+={2}variant,olcDatabase={2}mdb,cn=config
+objectClass: olcVariantAttribute
+olcVariantVariantAttribute: postaladdress
+olcVariantAlternativeAttribute: postaladdress
+olcVariantAlternativeEntry: ou=firma,dc=example,dc=net
+
+dn: name=company-phone,name={0}global-addr,olcOverlay={2}variant,olcDatabase
+={2}mdb,cn=config
+objectClass: olcVariantAttribute
+olcVariantVariantAttribute: telephonenumber
+olcVariantAlternativeAttribute: mobile
+olcVariantAlternativeEntry: cn=verw-al,ou=users,ou=verwaltung,ou=firma,dc=
+example,dc=net

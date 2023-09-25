@@ -1,0 +1,17 @@
+dn: cn=prod-al,ou=users,ou=produktion,ou=firma,dc=example,dc=net
+changetype: modify
+add: mail
+mail: al-prod@example.net
+-
+replace: loginShell
+loginShell: /usr/bin/zsh
+-
+delete: employeeType
+
+dn: cn=u1-prod,ou=users,ou=produktion,ou=firma,dc=example,dc=net
+changetype: modify
+add: employeeType
+employeeType: Abteilungsleiter
+-
+replace: description
+description: Neuer Abteilungsleiter

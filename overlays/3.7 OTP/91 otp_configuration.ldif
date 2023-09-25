@@ -1,0 +1,16 @@
+dn: ou=users,dc=example,dc=net
+changetype: modify
+add: objectClass
+objectClass: oathTOTPParams
+-
+add: oathOTPLength
+oathOTPLength: 6
+-
+add: oathHMACAlgorithm
+oathHMACAlgorithm: 1.2.840.113549.2.7
+-
+add: oathTOTPTimeStepPeriod
+oathTOTPTimeStepPeriod: 30
+-
+add: oathTOTPTimeStepWindow
+oathTOTPTimeStepWindow: 3

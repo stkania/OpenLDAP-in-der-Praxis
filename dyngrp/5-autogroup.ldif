@@ -1,0 +1,6 @@
+dn: cn=auto,ou=groups,dc=example,dc=net
+cn: auto
+gidNumber: 4246
+objectClass: groupOfURLs
+objectClass: stkaPosixGroup
+memberURL: ldap:///dc=example,dc=net?memberuid?sub?(title=Linuxuser)

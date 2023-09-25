@@ -1,0 +1,13 @@
+dn: cn=module{0},cn=config
+changetype: modify
+add: olcModuleLoad
+olcModuleLoad: rwm.la
+
+dn: olcOverlay={0}rwm,olcDatabase={1}ldap,cn=config
+changetype: add
+objectClass: olcOverlayConfig
+objectClass: olcRwmConfig
+olcOverlay: {0}rwm
+olcRwmTFSupport: false
+olcRwmMap: {1}objectClass posixAccount person
+olcRwmMap: {2}attribute uid sAMAccountName

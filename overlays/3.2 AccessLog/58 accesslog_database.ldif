@@ -1,0 +1,8 @@
+dn: olcDatabase=mdb,cn=config
+changetype: add
+objectClass: olcMdbConfig
+objectClass: olcDatabaseConfig
+olcDatabase: mdb
+olcDbDirectory: /var/symas/ldap-accesslog
+olcAccess: to *  by dn.base="cn=admin,dc=example,dc=net" read
+olcSuffix: cn=myaccesslog

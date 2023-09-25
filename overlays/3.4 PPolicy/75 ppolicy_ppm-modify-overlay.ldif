@@ -1,0 +1,4 @@
+dn: olcOverlay={8}ppolicy,olcDatabase={2}mdb,cn=config
+changetype: modify
+add: olcPpolicyCheckModule
+olcPpolicyCheckModule: /opt/symas/lib/openldap/ppm.so

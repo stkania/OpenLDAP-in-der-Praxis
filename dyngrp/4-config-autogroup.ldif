@@ -1,0 +1,11 @@
+dn: cn=module{0},cn=config
+changetype: modify
+add: olcModuleLoad
+olcModuleLoad: autogroup.la
+
+dn: olcOverlay=autogroup,olcDatabase={2}mdb,cn=config
+changetype: add
+objectClass: olcAutoGroupConfig
+objectClass: olcOverlayConfig
+olcOverlay: autogroup
+olcAutoGroupAttrSet: groupOfURLs memberURL memberUID

@@ -1,0 +1,9 @@
+version: "3"
+services:
+  slapd:
+    image: symas:1.0
+    volumes:
+     - /var/docker/volumes/symas:/var/symas/openldap-data
+    ports:
+     - "389:389"
+     - "636:636"

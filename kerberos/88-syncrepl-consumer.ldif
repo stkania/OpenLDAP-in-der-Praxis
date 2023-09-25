@@ -1,0 +1,17 @@
+dn: olcDatabase={2}mdb,cn=config
+changetype: modify
+replace: olcSyncrepl
+olcSyncrepl: rid=000
+  provider=ldaps://provider01.example.net
+  type=refreshAndPersist
+  tls_reqcert=allow
+  retry="60 10 120 5"
+  searchbase="dc=example,dc=net"
+  filter="(objectClass=*)"
+  scope=sub
+  schemachecking=off
+  bindmethod=sasl
+  saslmech=gssapi
+  syncdata=accesslog
+  logbase="cn=accesslog"
+  logfilter="(&(objectClass=auditWriteObject)(reqResult=0))"

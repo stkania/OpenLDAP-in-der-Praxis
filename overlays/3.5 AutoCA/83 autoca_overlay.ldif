@@ -1,0 +1,12 @@
+dn: olcOverlay={0}autoca,olcDatabase={2}mdb,cn=config
+objectClass: olcAutoCAConfig
+objectClass: olcOverlayConfig
+olcOverlay: {0}autoca
+olcAutoCADays: 3652
+olcAutoCAKeybits: 4096
+olcAutoCAserverClass: ipHost
+olcAutoCAserverDays: 1826
+olcAutoCAserverKeybits: 4096
+olcAutoCAuserClass: person
+olcAutoCAuserDays: 365
+olcAutoCAuserKeybits: 4096

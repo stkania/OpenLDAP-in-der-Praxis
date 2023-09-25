@@ -1,0 +1,9 @@
+dn: uid=chef,ou=users,ou=verwaltung,ou=firma,dc=example,dc=net
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+sn: Zwei
+givenName: User
+uid: chef
+cn: Chef

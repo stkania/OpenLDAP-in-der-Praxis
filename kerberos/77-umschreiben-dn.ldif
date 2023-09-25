@@ -1,0 +1,7 @@
+dn: cn=config
+changetype: modify
+add: olcAuthzRegexp
+olcAuthzRegexp: {0}uid=(.+),cn=gssapi,cn=auth ldap:///dc=example,dc=net??sub?(uid=$1)
+-
+add: olcAuthzRegexp
+olcAuthzRegexp: {1}cn=(.+),cn=gssapi,cn=auth ldap:///dc=example,dc=net??sub?(cn=$1)

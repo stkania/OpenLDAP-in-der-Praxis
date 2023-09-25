@@ -1,0 +1,52 @@
+dn: cn=module{0},cn=config
+changetype: modify
+add: olcModuleLoad
+olcModuleLoad: accesslog.la
+
+dn: olcDatabase={3}mdb,cn=config
+changetype: add
+objectClass: olcMdbConfig
+objectClass: olcDatabaseConfig
+olcDatabase: {3}mdb
+olcDbDirectory: /var/symas/accesslog
+olcAccess: to dn.subtree="cn=accesslog"
+  by dn.exact="cn=admin,dc=example,dc=net" read
+  by dn.exact="uid=repl-user,ou=users,dc=example,dc=net" read
+olcSuffix: cn=accesslog
+olcLastMod: TRUE
+olcMaxDerefDepth: 15
+olcReadOnly: FALSE
+olcRootDN: cn=config
+olcLimits: dn.exact="cn=uid=repl-user,ou=users,dc=example,dc=net" 
+  time=unlimited
+  size=unlimited
+olcMonitoring: TRUE
+olcDbCheckpoint: 0 0
+olcDbIndex: entryCSN eq
+olcDbIndex: entryUUID eq
+olcDbIndex: objectClass eq
+olcDbIndex: reqEnd eq
+olcDbIndex: reqResult eq
+olcDbIndex: reqStart eq
+olcDbIndex: reqDN eq
+olcDbMode: 0600
+olcDbSearchStack: 16
+olcDbMaxsize: 85899345920
+
+dn: olcOverlay={0}syncprov,olcDatabase={3}mdb,cn=config
+changetype: add
+objectClass: olcOverlayConfig
+objectClass: olcSyncProvConfig
+olcOverlay: {0}syncprov
+olcSpNoPresent: TRUE
+olcSpReloadHint: TRUE
+
+dn: olcOverlay={1}accesslog,olcDatabase={2}mdb,cn=config
+changetype: add
+objectClass: olcOverlayConfig
+objectClass: olcAccessLogConfig
+olcOverlay: {1}accesslog
+olcAccessLogDB: cn=accesslog
+olcAccessLogOps: writes
+olcAccessLogPurge: 01+00:00  00+04:00
+olcAccessLogSuccess: TRUE

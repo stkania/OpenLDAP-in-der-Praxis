@@ -1,0 +1,97 @@
+ichangetype: add
+objectClass: olcDatabaseConfig
+objectClass: olcMdbConfig
+olcDatabase: {3}mdb
+olcDbDirectory: /var/symas/accesslog
+olcSuffix: cn=accesslog
+olcAccess: {0}to dn.subtree="cn=accesslog"
+  by dn.exact="uid=repl-user,ou=users,dc=example,dc=net" read
+  by dn.exact="cn=admin,dc=example,dc=net" read
+olcLastMod: TRUE
+olcMaxDerefDepth: 15
+olcReadOnly: FALSE
+olcRootDN: cn=config
+olcLimits: dn.exact="cn=uid=repl-user,ou=users,dc=example,dc=net" time=unlimited size=unlimited
+olcSizeLimit: unlimited
+olcTimeLimit: unlimited
+olcMonitoring: TRUE
+olcDbCheckpoint: 0 0
+olcDbIndex: entryCSN eq
+olcDbIndex: entryUUID eq
+olcDbIndex: objectClass eq
+olcDbIndex: reqEnd eq
+olcDbIndex: reqResult eq
+olcDbIndex: reqStart eq
+olcDbIndex: reqDN eq
+olcDbMode: 0600
+olcDbSearchStack: 16
+olcDbMaxsize: 85899345920
+
+dn: olcOverlay=syncprov,olcDatabase={3}mdb,cn=config
+changetype: add
+objectClass: olcOverlayConfig
+objectClass: olcSyncProvConfig
+olcOverlay: syncprov
+olcSpNoPresent: TRUE
+olcSpReloadHint: TRUE
+
+dn: olcOverlay={0}syncprov,olcDatabase={2}mdb,cn=config
+changetype: add
+objectClass: olcOverlayConfig
+objectClass: olcSyncProvConfig
+olcOverlay: {0}syncprov
+olcSpCheckpoint: 100 10
+olcSpSessionlog: 200
+
+dn: olcOverlay={1}accesslog,olcDatabase={2}mdb,cn=config
+changetype: add
+objectClass: olcOverlayConfig
+objectClass: olcAccessLogConfig
+olcOverlay: {1}accesslog
+olcAccessLogDB: cn=accesslog
+olcAccessLogOps: writes
+olcAccessLogSuccess: TRUE
+olcAccessLogPurge: 01+00:00  00+04:00
+
+dn: olcDatabase={2}mdb,cn=config
+changetype: modify
+replace: olcSyncrepl
+olcSyncrepl: rid=102
+  provider=ldaps://provider02.example.net
+  bindmethod=simple
+  timeout=0
+  network-timeout=0
+  binddn=uid=repl-user,ou=users,dc=example,dc=net
+  credentials=geheim
+  filter="(objectclass=*)"
+  searchbase="dc=example,dc=net"
+  logfilter="(&(objectClass=auditWriteObject)(reqResult=0))"
+  logbase=cn=accesslog
+  scope=sub
+  schemachecking=off
+  type=refreshAndPersist
+  retry="60 +"
+  syncdata=accesslog
+  keepalive=240:10:30
+  tls_reqcert=allow
+olcSyncrepl: rid=102
+  provider=ldaps://provider03.example.net
+  bindmethod=simple
+  timeout=0
+  network-timeout=0
+  binddn=uid=repl-user,ou=users,dc=example,dc=net
+  credentials=geheim
+  filter="(objectclass=*)"
+  searchbase="dc=example,dc=net"
+  logfilter="(&(objectClass=auditWriteObject)(reqResult=0))"
+  logbase=cn=accesslog
+  scope=sub
+  schemachecking=off
+  type=refreshAndPersist
+  retry="60 +"
+  syncdata=accesslog
+  keepalive=240:10:30
+  tls_reqcert=allow
+-
+add: olcMultiprovider
+olcMultiprovider: TRUE

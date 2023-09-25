@@ -1,0 +1,3 @@
+dn: cn=prod-al,ou=users,ou=Produktion,ou=firma,dc=example,dc=net
+changetype: modify
+delete: mail

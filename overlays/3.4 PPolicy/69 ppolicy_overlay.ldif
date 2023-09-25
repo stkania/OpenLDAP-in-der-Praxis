@@ -1,0 +1,9 @@
+dn: olcOverlay=ppolicy,olcDatabase={2}mdb,cn=config
+changetype: add
+objectClass: olcOverlayConfig
+objectClass: olcPPolicyConfig
+olcOverlay: ppolicy
+olcPPolicyDefault: cn=default,ou=policies,dc=example,dc=net
+olcPPolicyForwardUpdates: FALSE
+olcPPolicyHashCleartext: TRUE
+olcPPolicyUseLockout: FALSE

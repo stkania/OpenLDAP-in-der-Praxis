@@ -1,0 +1,9 @@
+dn: olcDatabase={0}config,cn=config
+changetype: modify
+replace: olcRootPW
+olcRootPW: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$ZHN2cmV2dmVlYmVlZXdjZWNjcQ$oHGiNu7IX/GBRnOBE/CSym8XIlWMJML6i5PsZNBP/YE
+
+dn: olcDatabase={2}mdb,cn=config
+changetype: modify
+replace: olcRootPW
+olcRootPW: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$ZGJmZ2lrbmpiZHZzZ3NhdmRzZw$J6eXYSxY4tDs4l8SdBkIwcAU0OqEEdR0gpFNJ5MSqQs

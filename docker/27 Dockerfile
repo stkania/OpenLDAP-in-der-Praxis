@@ -1,0 +1,41 @@
+# Dockerfile for Symas OpenLDAP
+FROM debian:bullseye
+
+LABEL vendor="Symas Corporation" \
+    symas.openldap.version="2.6.4" \
+    symas.openldap.edition="Server" \
+    symas.openldap.arch="amd64"
+
+# Prepare system
+RUN groupadd -r openldap \
+    && useradd -r -g openldap -d /opt/symas/ openldap 
+RUN mkdir -p -m 770 /var/symas/openldap-data \
+    && mkdir -m 770 /var/symas/run \
+    && mkdir -p -m 770 /opt/symas/etc/openldap/slapd.d \
+    && chown -R openldap:openldap /var/symas/
+RUN apt update \
+    && apt upgrade -y \
+    && apt install -y wget gnupg2 argon2 python3-ldap 
+
+# Install Symas OpenLDAP
+RUN wget -O- https://repo.symas.com/repo/gpg/RPM-GPG-KEY-symas-com-signing-key | gpg --dearmor | tee /etc/apt/trusted.gpg.d/symas-com-gpg.gpg > /dev/null \
+    && echo "deb [arch=amd64] https://repo.symas.com/repo/deb/main/release26 bullseye main" | tee -a /etc/apt/sources.list.d/symas26.list \
+    && apt update -y \
+    && apt install -y symas-openldap-clients symas-openldap-server 
+
+# Add configuration
+COPY cacert.pem  example-net-cert.pem  example-net-key.pem /opt/symas/etc/openldap/
+COPY config.ldif /tmp/config.ldif
+RUN /opt/symas/sbin/slapadd -n0 -l /tmp/config.ldif -F /opt/symas/etc/openldap/slapd.d -q \
+    && rm /tmp/config.ldif \
+    && chown -R openldap:openldap /opt/symas/
+
+# Volume for LDAP-database to make persistence possible
+VOLUME /var/symas/openldap-data
+
+# The ports to make available
+EXPOSE 389 636
+
+# Start slapd when container starts
+CMD ["/opt/symas/lib/slapd", "-d9", "-h", "ldap:/// ldapi:/// ldaps:///", "-F", "/opt/symas/etc/openldap/slapd.d/", "-u","openldap","-g","openldap"]
+# That's it

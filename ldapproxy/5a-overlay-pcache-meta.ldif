@@ -1,0 +1,32 @@
+dn: cn=module{0},cn=config
+changetype: modify
+add: olcModuleLoad
+olcModuleLoad: pcache.la
+olcModuleLoad: back_mdb.la
+
+dn: olcOverlay={1}pcache,olcDatabase={1}meta,cn=config
+changetype: add
+objectClass: olcOverlayConfig
+objectClass: olcPcacheConfig
+olcOverlay: {1}pcache
+olcPcachePersist: TRUE
+olcPcache: mdb 100000 4 1000 100
+olcPcacheAttrset: 0 1.1
+olcPcacheTemplate: (&(|(objectClass=))) 0 3600
+olcPcacheTemplate: (objectClass=*) 0 3600
+olcPcacheAttrset: 1 displayname
+olcPcacheTemplate: (objectClass=*) 1 3600
+olcPcacheAttrset: 2 memberOf
+olcPcacheTemplate: (memberUID=*) 2 3600
+olcPcacheAttrset: 3 uid
+olcPcacheTemplate: (uid=*) 1 3600
+
+dn: olcDatabase={0}mdb,olcOverlay={1}pcache,olcDatabase={1}meta,cn=config
+changetype: add
+objectClass: olcMdbConfig
+objectClass: olcPcacheDatabase
+olcDatabase: {0}mdb
+olcDbDirectory: /var/symas/pcache
+olcDbIndex: objectClass eq
+olcDbIndex: uid,employeeType,mail eq
+olcDbIndex: postalAddress,telephoneNumber,givenName eq

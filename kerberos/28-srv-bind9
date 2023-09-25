@@ -1,0 +1,21 @@
+i; srv- und txt-Einträge für die Kerberos-Server
+; REALM Registrierung
+_kerberos       IN      TXT     EXAMPLE.NET
+
+; Port 88 für den KDC, UDP und TCP für Kerberos5
+_kerberos._udp IN SRV 01 00 88 kerberos01.example.net.
+_kerberos._tcp IN SRV 01 00 88 kerberos01.example.net.
+
+; Der KDC-Master
+_kerberos-master._udp IN SRV 01 00 88 kerberos01.example.net.
+_kerberos-master._tcp IN SRV 01 00 88 kerberos01.example.net.
+
+; Port 749, für den kadmin aber nur TCP
+_kerberos-adm._tcp IN SRV 01 00 749 kerberos01.example.net.
+
+; Port 464 für die Verwendung von kpasswd, nur UDP
+_kpasswd._udp IN SRV 01 00 464 kerberos01.example.net.
+
+; Port 88, für alle KDC-Slaves
+_kerberos._udp IN SRV 01 00 88 kerberos02.example.net.
+_kerberos._tcp IN SRV 01 00 88 kerberos02.example.net.

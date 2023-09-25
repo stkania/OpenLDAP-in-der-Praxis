@@ -1,0 +1,4 @@
+dn: olcOverlay={2}refint,olcDatabase={2}mdb,cn=config
+changetype: modify
+add: olcRefintModifiersName
+olcRefintModifiersName: cn=refint,dc=example,dc=net

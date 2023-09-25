@@ -1,0 +1,9 @@
+dn: cn=ing-1,ou=users,dc=example,dc=net
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+cn: ing-1
+userPassword: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$ZGJmZGRkc3NzMTIzNDg$0tRScpmdeUoX14JfH6SWf7mtx6sjL30vFR+IeVgmiK8
+sn: Ingenieur
+mail: ing-1@example.net
+employeeType: Ingenieur

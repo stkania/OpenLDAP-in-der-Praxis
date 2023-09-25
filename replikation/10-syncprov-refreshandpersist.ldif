@@ -1,0 +1,14 @@
+# Laden des syncprov-Moduls
+dn: cn=module{0},cn=config
+changetype: modify
+add: olcModuleLoad
+olcModuleLoad: syncprov.la
+
+# Overlay für LDAP-Datenbank und -Konfiguration aktivieren
+dn: olcOverlay=syncprov,olcDatabase={2}mdb,cn=config
+changetype: add
+objectClass: olcOverlayConfig
+objectClass: olcSyncProvConfig
+olcOverlay: syncprov
+olcSpSessionlog: 300
+olcSpCheckpoint: 1 60

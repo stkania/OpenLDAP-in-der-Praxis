@@ -1,0 +1,137 @@
+dn: cn=u1-prod,ou=users,ou=Produktion,ou=firma,dc=example,dc=net
+objectClass: posixAccount
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+loginShell: /bin/bash
+homeDirectory: /home/u1-prod
+uid: u1-prod
+cn: u1-Prod
+userPassword: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$ZGJmZGRkc3NzMTIzNDU$W+3A5630GWZE2pOfoT4pI8huoD9Uuss0tFw/CGmhIJ0
+uidNumber: 10001
+gidNumber: 10000
+sn: Prod
+givenName: u1
+
+dn: cn=u2-prod,ou=users,ou=Produktion,ou=firma,dc=example,dc=net
+objectClass: posixAccount
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+loginShell: /bin/bash
+homeDirectory: /home/u2-prod
+uid: u2-prod
+cn: u2-prod
+userPassword: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$ZGJmZGRkc3NzMTIzNDY$WhTyubew41XRmGwvqpcPcnN/ri2XhpBdnvHJO/tw69c
+uidNumber: 10002
+gidNumber: 10000
+sn: Prod
+givenName: u2
+
+dn: cn=prod-al,ou=users,ou=Produktion,ou=firma,dc=example,dc=net
+objectClass: posixAccount
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+loginShell: /bin/bash
+homeDirectory: /home/prod-al
+uid: prod-al
+cn: prod-al
+userPassword: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$ZGJmZGRkc3NzMTIzNDc$87VL92CE8AHQoS7vP4UpQetGJgLH39MdxjGlzIAMNWU
+uidNumber: 10003
+gidNumber: 10000
+sn: al
+givenName: prod
+employeeType: Abteilungsleiter
+
+dn: cn=u1-verw,ou=users,ou=Verwaltung,ou=firma,dc=example,dc=net
+objectClass: posixAccount
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+loginShell: /bin/bash
+homeDirectory: /home/u1-verw
+uid: u1-verw
+cn: u1-verw
+userPassword: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$ZGJmZGRkc3NzMTIzNDg$0tRScpmdeUoX14JfH6SWf7mtx6sjL30vFR+IeVgmiK8
+uidNumber: 10004
+gidNumber: 10000
+sn: Verw
+givenName: u1
+
+dn: cn=u2-verw,ou=users,ou=Verwaltung,ou=firma,dc=example,dc=net
+objectClass: posixAccount
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+loginShell: /bin/bash
+homeDirectory: /home/u2-verw
+uid: u2-verw
+cn: u2-verw
+userPassword: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$ZGJmZGRkc3NzMTIzNDk$4gzEyjyU3kviVI867268fd4s/VZR8sVCMBNtD38AvRA
+uidNumber: 10005
+gidNumber: 10000
+sn: Verw
+givenName: U2
+
+dn: cn=verw-al,ou=users,ou=Verwaltung,ou=firma,dc=example,dc=net
+objectClass: posixAccount
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+loginShell: /bin/bash
+homeDirectory: /home/verw-al
+uid: verw-al
+cn: verw-al
+userPassword: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$ZGJmZGRkc3NzMTIzNDA$zGsNJMhksq6c7RfWWpQXa2WMBrdJ6sM7P1KH9AD9pCI
+uidNumber: 10006
+gidNumber: 10000
+sn: al
+givenName: Verw
+employeeType: Abteilungsleiter
+
+dn: ou=Adressen,cn=u1-verw,ou=users,ou=Verwaltung,ou=firma,dc=example,dc=net
+ou: Adressen
+objectClass: organizationalUnit
+objectClass: top
+
+dn: ou=Adressen,cn=u2-verw,ou=users,ou=Verwaltung,ou=firma,dc=example,dc=net
+ou: Adressen
+objectClass: organizationalUnit
+objectClass: top
+
+dn: ou=Adressen,cn=verw-al,ou=users,ou=Verwaltung,ou=firma,dc=example,dc=net
+ou: Adressen
+objectClass: organizationalUnit
+objectClass: top
+
+dn: ou=Adressen,cn=prod-al,ou=users,ou=Produktion,ou=firma,dc=example,dc=net
+ou: Adressen
+objectClass: organizationalUnit
+objectClass: top
+
+dn: ou=Adressen,cn=u1-prod,ou=users,ou=Produktion,ou=firma,dc=example,dc=net
+ou: Adressen
+objectClass: organizationalUnit
+objectClass: top
+
+dn: ou=Adressen,cn=u2-prod,ou=users,ou=Produktion,ou=firma,dc=example,dc=net
+ou: Adressen
+objectClass: organizationalUnit
+objectClass: top
+
+dn: cn=verwaltung,ou=groups,ou=Verwaltung,ou=firma,dc=example,dc=net
+objectClass: posixGroup
+gidNumber: 10002
+cn: verwaltung
+memberUid: u1-verw
+memberUid: u2-verw
+memberUid: verw-al
+
+dn: cn=produktion,ou=groups,ou=Produktion,ou=firma,dc=example,dc=net
+objectClass: posixGroup
+gidNumber: 10003
+cn: produktion
+memberUid: prod-al
+memberUid: u1-prod
+memberUid: u2-prod

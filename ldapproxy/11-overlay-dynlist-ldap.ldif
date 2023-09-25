@@ -1,0 +1,11 @@
+dn: cn=module{0},cn=config
+changetype: modify
+add: olcModuleLoad
+olcModuleLoad: dynlist.la
+
+dn: olcOverlay={3}dynlist,olcDatabase={1}ldap,cn=config
+changetype: add
+objectClass: olcOverlayConfig
+objectClass: olcDynlistConfig
+olcOverlay: {3}dynlist
+olcDlAttrSet: groupOfURLs memberURL member+memberOf@groupOfNames

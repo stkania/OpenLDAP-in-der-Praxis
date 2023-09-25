@@ -1,0 +1,6 @@
+dn: uid=ldap-admin,ou=users,dc=example,dc=net
+objectClass: account
+objectClass: simpleSecurityObject
+objectClass: top
+uid: ldap-admin
+userPassword: $argon2i$v=19$m=4096,t=3,p=1$dGVzdHRlc3R0ZXN0$EtO6f9GaTUasRZpzDNVuwSDzGRW8NKYWX4bC+gKdJUo

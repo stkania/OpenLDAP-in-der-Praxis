@@ -1,0 +1,11 @@
+dn: name={1}verw-tel,olcOverlay={2}variant,olcDatabase={2}mdb,cn=config
+objectClass: olcVariantRegex
+olcVariantEntryRegex: cn=(.+),ou=users,ou=verwaltung,ou=firma,dc=example,dc=
+net
+
+dn: olcVariantVariantAttribute=telephoneNumber,name={1}verw-tel,olcOverlay
+={2}variant,olcDatabase={2}mdb,cn=config
+objectClass: olcVariantAttributePattern
+olcVariantVariantAttribute: telephoneNumber
+olcVariantAlternativeAttribute: telephoneNumber
+olcVariantAlternativeEntryPattern: ou=Verwaltung,ou=firma,dc=example,dc=net

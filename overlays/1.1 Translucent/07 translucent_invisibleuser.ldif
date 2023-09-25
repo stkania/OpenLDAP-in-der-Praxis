@@ -1,0 +1,4 @@
+dn: cn=invisible,dc=example,dc=net
+objectClass: person
+cn: invisible
+sn: Unsichtbar

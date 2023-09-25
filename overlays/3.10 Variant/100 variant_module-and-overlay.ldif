@@ -1,0 +1,8 @@
+dn: cn=module{0},cn=config
+changetype: modify
+add: olcModuleLoad
+olcModuleLoad: variant.la
+
+dn: olcOverlay={2}variant,olcDatabase={2}mdb,cn=config
+objectClass: olcVariantConfig
+olcVariantPassReplication: TRUE

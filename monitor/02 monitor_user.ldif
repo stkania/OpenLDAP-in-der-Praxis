@@ -1,0 +1,19 @@
+dn: ou=systemkonten,dc=example,dc=net
+changetype: add
+objectClass: organizationalUnit
+ou: systemkonten
+
+dn: cn=monitoring,ou=systemkonten,dc=example,dc=net
+changetype: add
+objectClass: top
+objectClass: person
+cn: monitoring
+sn: Monitor
+userPassword: $argon2i$v=19$m=4096,t=3,p=1$4oCdbW9uaXRvcnBhc3N3b3Jk4oCd$6p/pKzVMmWmmukUQmbq+VeSaoKe+VPgIDlizbE530lk
+#Kennwort: kontrolle
+
+dn: olcDatabase={1}monitor,cn=config
+changetype: modify
+add: olcAccess
+olcAccess: to dn.subtree="cn=monitor" by dn.base="cn=monitoring,\
+  ou=systemkonten,dc=example,dc=net" read

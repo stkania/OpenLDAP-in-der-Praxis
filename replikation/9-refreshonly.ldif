@@ -1,0 +1,15 @@
+dn: olcDatabase={2}mdb,cn=config
+changetype: modify
+replace: olcSyncrepl
+olcSyncrepl: rid=000
+  provider=ldaps://provider01.example.net
+  type=refreshOnly
+  interval=00:00:05:00
+  retry="60 10 120 5"
+  searchbase="dc=example,dc=net"
+  filter="(objectClass=*)"
+  scope=sub
+  schemachecking=off
+  bindmethod=simple
+  binddn="uid=repl-user,ou=users,dc=example,dc=net"
+  credentials=geheim

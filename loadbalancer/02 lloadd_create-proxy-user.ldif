@@ -1,0 +1,8 @@
+dn: uid=lloadd,ou=users,dc=example,dc=net
+objectClass: account
+objectClass: simpleSecurityObject
+objectClass: top
+uid: lloadd
+userPassword: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$MTIzZmRmZjY3ODY1NDMy$bFN6MX4smW70QiwRG+jiQLsLv3C69LDQHL+ZE/infR8
+authzTo: ldap:///dc=example,dc=net??sub?(|(uid=*)(cn=*))
+

@@ -1,0 +1,7 @@
+dn: cn=default,ou=policies,dc=example,dc=net
+changetype: modify
+add: objectClass
+objectClass: pwdPolicyChecker
+-
+add: pwdUseCheckModule
+pwdUseCheckModule: TRUE

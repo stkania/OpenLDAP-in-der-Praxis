@@ -1,0 +1,6 @@
+dn: olcDatabase={2}mdb,cn=config
+changetype: modify
+add: olcAccess
+olcAccess: {0}to attr=entry,uid  
+  by anonymous auth 
+  by * break

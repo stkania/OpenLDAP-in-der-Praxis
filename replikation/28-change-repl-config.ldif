@@ -1,0 +1,23 @@
+dn: olcDatabase={0}config,cn=config
+changetype: modify
+replace: olcSyncRepl
+olcSyncRepl: rid=2
+  provider=ldaps://provider02.example.net
+  binddn="uid=repl-config,ou=users,dc=example,dc=net"
+  bindmethod=simple
+  credentials=geheim
+  searchbase="cn=config"
+  type=refreshAndPersist
+  retry="5 5 300 20"
+  timeout=1
+  tls_reqcert=allow
+olcSyncRepl: rid=3
+  provider=ldaps://provider03.example.net
+  binddn="uid=repl-config,ou=users,dc=example,dc=net"
+  bindmethod=simple
+  credentials=geheim
+  searchbase="cn=config"
+  type=refreshAndPersist
+  retry="5 5 300 20"
+  timeout=1
+  tls_reqcert=allow

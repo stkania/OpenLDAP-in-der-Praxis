@@ -1,0 +1,4 @@
+dn: cn=demogroup,ou=groups,dc=example,dc=net
+objectClass: groupOfNames
+cn: demogroup
+member: cn=demouser,ou=users,dc=example,dc=net

@@ -1,0 +1,107 @@
+dn: cn=config
+objectClass: olcGlobal
+cn: config
+olcLogLevel: any
+olcPidFile: /var/symas/run/slapd.pid
+olcArgsFile: /var/symas/run/slapd.args
+olcToolThreads: 1
+
+dn: cn=schema,cn=config
+objectClass: olcSchemaConfig
+cn: schema
+
+dn: cn=module{0},cn=config
+objectClass: olcModuleList
+cn: module{0}
+olcModulePath: /opt/symas/lib/openldap
+olcModuleLoad: back_ldap
+olcModuleLoad: back_meta
+olcModuleLoad: argon2
+
+include: file:///opt/symas/etc/openldap/schema/core.ldif
+include: file:///opt/symas/etc/openldap/schema/cosine.ldif
+include: file:///opt/symas/etc/openldap/schema/nis.ldif
+include: file:///opt/symas/etc/openldap/schema/inetorgperson.ldif
+include: file:///opt/symas/etc/openldap/schema/msuser.ldif
+
+dn: olcDatabase={-1}frontend,cn=config
+objectClass: olcDatabaseConfig
+objectClass: olcFrontendConfig
+olcDatabase: {-1}frontend
+olcSizeLimit: 500
+olcAccess: {0}to *
+  by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth manage
+  by * read
+olcPasswordHash: {ARGON2}
+
+dn: olcDatabase={0}config,cn=config
+objectClass: olcDatabaseConfig
+olcDatabase: {0}config
+olcRootDN: cn=admin,cn=config
+olcRootPW: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$cXdlcnJ0enV6dWlvMTIz$G/l0lynf7ygdz0tG+E7S1fBibsFs/L80AUSisiGl/v4
+olcAccess: {0}to *
+  by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth manage
+
+dn: olcDatabase={1}meta,cn=config
+objectClass: olcDatabaseConfig
+objectClass: olcMetaConfig
+olcDatabase: {1}meta
+olcSuffix: dc=example,dc=net
+olcReadOnly: TRUE
+olcRootDN: cn=admin,dc=example,dc=net
+olcRootPW: $argon2i$v=19$m=4096,t=3,p=1$c2dkc3Rld3Z0ZTV0NDU0NQ$F6NZb2w8O+6BOA3L7zZ37mxFv7CPCXfHYuEiIxTYALY
+olcMonitoring: FALSE
+olcDbChaseReferrals: FALSE
+olcDbProtocolVersion: 3
+olcDbRebindAsUser: TRUE
+
+dn: olcMetaSub={0}uri,olcDatabase={1}meta,cn=config
+objectClass: olcMetaTargetConfig
+olcMetaSub: {0}uri
+olcDbURI: "ldap://192.168.56.202/ou=org,dc=example,dc=net"
+olcDbIDAssertAuthzFrom: *
+olcDbIDAssertBind: mode=none
+  flags=prescriptive,proxy-authz-non-critical
+  bindmethod=simple
+  timeout=0
+  network-timeout=0
+  binddn="cn=proxy-orguser,cn=users,dc=example2,dc=org"
+  credentials="Passw0rd"
+  keepalive=0:0:0 
+  tcp-user-timeout=0
+  tls_reqcert=never
+  tls_reqsan=allow
+  tls_crlcheck=none
+olcDbMap: {0}attribute uid sAMAccountName
+olcDbRewrite: {0}suffixmassage "ou=org,dc=example,dc=net"
+  "dc=example2,dc=org"
+olcDbKeepalive: 0:0:0
+olcDbChaseReferrals: FALSE
+olcDbProtocolVersion: 3
+olcDbRebindAsUser: TRUE
+
+dn: olcMetaSub={1}uri,olcDatabase={1}meta,cn=config
+objectClass: olcMetaTargetConfig
+olcMetaSub: {1}uri
+olcDbURI: "ldap://192.168.56.203/ou=com,dc=example,dc=net"
+olcDbIDAssertAuthzFrom: *
+olcDbIDAssertBind: mode=none
+  flags=prescriptive,proxy-authz-non-critical
+  bindmethod=simple
+  timeout=0
+  network-timeout=0
+  binddn="cn=proxy-comuser,cn=users,dc=example3,dc=com"
+  credentials="Passw0rd"
+  keepalive=0:0:0
+  tcp-user-timeout=0
+  tls_reqcert=never
+  tls_reqsan=allow
+  tls_crlcheck=none
+olcDbMap: {0}attribute uid sAMAccountName
+olcDbRewrite: {0}suffixmassage "ou=com,dc=example,dc=net"
+  "dc=example3,dc=com"
+olcDbKeepalive: 0:0:0
+olcDbChaseReferrals: FALSE
+olcDbProtocolVersion: 3
+olcDbRebindAsUser: TRUE
+

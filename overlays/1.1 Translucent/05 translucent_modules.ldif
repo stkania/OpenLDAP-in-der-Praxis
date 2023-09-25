@@ -1,0 +1,9 @@
+dn: cn=module{0},cn=config
+changetype: modify
+add: olcModuleload
+olcModuleload: translucent.la
+
+dn: cn=module{0},cn=config
+changetype: modify
+add: olcModuleload
+olcModuleload: back_ldap.la

@@ -1,0 +1,6 @@
+dn: uid=sssd-user,ou=users,dc=example,dc=net
+objectClass: account
+objectClass: simpleSecurityObject
+objectClass: top
+uid: sssd-user
+userPassword: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$cXdlcnR6ZGZnaGo$ijx1QBt9XNBu5pWpFPz2V1ybwNjwD2HvkQ+AMJwsjG8

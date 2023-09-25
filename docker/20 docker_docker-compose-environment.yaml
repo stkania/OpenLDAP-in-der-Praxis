@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  ldapcontainer:
+    image: osixia/openldap:latest
+    container_name: ldapcontainer
+    environment:
+      LDAP_TLS: "true"
+      LDAP_TLS_CIPHER_SUITE: "NORMAL"
+      LDAP_TLS_VERIFY_CLIENT: "never"
+      LDAP_ORGANISATION: "Hanser"
+      LDAP_DOMAIN: "hanser.de"
+      LDAP_BASE_DN: "dc=hanser,dc=de"
+      # cn=admin,$LDAP_BASE_DN
+      LDAP_ADMIN_PASSWORD: "supergeheim"
+      # cn=admin,cn=config
+      LDAP_CONFIG_PASSWORD: "megageheim"
+    ports:
+      - "10389:389"
+    volumes:
+      - ldapdata:/var/lib/ldap
+      - ldapconfig:/etc/ldap/slapd.d
+    networks:
+      - ldapbridge
+volumes:
+  ldapdata:
+  ldapconfig:
+
+networks:
+  ldapbridge:

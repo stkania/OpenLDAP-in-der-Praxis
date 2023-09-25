@@ -1,0 +1,6 @@
+dn: olcDatabase={2}mdb,cn=config
+changetype: modify
+add: olcAccess
+olcAccess: {4}to dn.regex=ou=adressen,cn=(.+),ou=users,ou=(.+),ou=firma,dc=example,dc=net$
+   by dn.regex=^$1,ou=users,ou=(.+),ou=firma,dc=example,dc=net$ write
+   by * none

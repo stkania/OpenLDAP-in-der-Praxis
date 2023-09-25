@@ -1,0 +1,72 @@
+dn: olcDatabase={2}mdb,cn=config
+changetype: modify
+delete: olcAccess
+olcAccess: {2}
+-
+delete: olcAccess
+olcAccess: {1}
+-
+delete: olcAccess
+olcAccess: {0}
+-
+add: olcAccess
+olcAccess: {0}to dn.exact=dc=example,dc=net
+  by users read
+-
+add: olcAccess
+olcAccess: {1} to attrs=userPassword
+  by anonymous auth by self write
+  by dn.exact=uid=ldap-admin,ou=users,dc=example,dc=net write
+  by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth manage
+  by set="[cn=pw-set,ou=groups,dc=example,dc=net]/Member* & user" write
+  by * none
+-
+add: olcAccess
+olcAccess: {2} to attrs=shadowLastChange
+  by anonymous auth
+  by self write
+  by dn.exact=uid=ldap-admin,ou=users,dc=example,dc=net write
+  by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth manage
+  by set="[cn=pw-set,ou=groups,dc=example,dc=net]/Member* & user" write
+  by * none
+-
+add: olcAccess
+olcAccess: {3}to *
+  by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth manage
+  by dn.exact=uid=sssd-user,ou=users,dc=example,dc=net read
+  by dn.exact=uid=ldap-admin,ou=users,dc=example,dc=net write
+  by dn.exact=uid=lam-user,ou=users,dc=example,dc=net read
+  by * break
+-
+add: olcAccess
+olcAccess: {4} to dn.exact="cn=u1 verw,ou=users,ou=verwaltung,ou=firma,dc=example,dc=net"
+  by peername.regex=192\.168\.56\.201 read
+  by peername.regex=192\.168\.56\.12 read
+  by * none
+-
+add: olcAccess
+olcAccess: {5} to dn.regex=ou=adressen,cn=(.+),ou=users,ou=(.+),ou=firma,dc=example,dc=net filter=(objectClass=posixAccount)
+  by dn.regex=cn=(.+),ou=users,ou=(.+),ou=firma,dc=example,dc=net read
+  by * break
+-
+add: olcAccess
+olcAccess: {6}to dn.regex="ou=adressen,cn=(.+),ou=users,ou=(.+),ou=firma,dc=example,dc=net$"
+  by dn.regex="$1,ou=users,ou=$2,ou=firma,dc=example,dc=net$" write
+  by * none
+-
+add: olcAccess
+olcAccess: {7}to dn.sub=ou=verwaltung,ou=firma,dc=example,dc=net
+  by set="this/manager & user" write by set="this/manager/secretary & user" write
+  by "dn.children=ou=users,ou=verwaltung,ou=firma,dc=example,dc=net" read
+  by * none
+-
+add: olcAccess
+olcAccess: {8}to dn.sub=ou=produktion,ou=firma,dc=example,dc=net
+  by set="this/manager & user" write by set="this/manager/secretary & user" write
+  by "dn.children=ou=users,ou=produktion,ou=firma,dc=example,dc=net" read
+  by * none
+-
+add: olcAccess
+olcAccess: {9}to "dn.exact=ou=firma,dc=example,dc=net"
+  by users read
+  by * none

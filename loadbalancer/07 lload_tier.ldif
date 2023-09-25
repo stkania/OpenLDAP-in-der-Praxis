@@ -1,0 +1,26 @@
+dn: cn={0}tier 1,olcBackend={0}lload,cn=config
+objectClass: olcBkLloadTierConfig
+cn: {0}tier 1
+olcBkLloadTierType: roundrobin
+
+dn: cn={0}server 1,cn={0}tier 1,olcBackend={0}lload,cn=config
+objectClass: olcBkLloadBackendConfig
+cn: {0}server 1
+olcBkLloadBackendUri: ldap://provider01.example.net
+olcBkLloadNumconns: 10
+olcBkLloadBindconns: 5
+olcBkLloadRetry: 5000
+olcBkLloadMaxPendingOps: 50
+olcBkLloadMaxPendingConns: 10
+olcBkLloadWeight: 1
+
+dn: cn={1}server 2,cn={0}tier 1,olcBackend={0}lload,cn=config
+objectClass: olcBkLloadBackendConfig
+cn: {1}server 2
+olcBkLloadBackendUri: ldap://provider02.example.net
+olcBkLloadNumconns: 10
+olcBkLloadBindconns: 5
+olcBkLloadRetry: 5000
+olcBkLloadMaxPendingOps: 50
+olcBkLloadMaxPendingConns: 10
+olcBkLloadWeight: 1

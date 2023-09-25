@@ -1,0 +1,35 @@
+dn: olcDatabase={2}mdb,cn=config
+changetype: modify
+replace: olcSyncRepl
+olcSyncrepl: rid=002
+  provider=ldaps://provider02.example.net
+  tls_reqcert=allow
+  type=refreshAndPersist
+  retry="60 10 120 5"
+  searchbase="ou=verwaltung,ou=firma,dc=example,dc=net"
+  filter="(objectClass=inetOrgPerson)"
+  attrs="cn,sn,givenName"
+  scope=sub
+  schemachecking=off
+  bindmethod=simple
+  binddn="uid=repl-user,ou=users,dc=example,dc=net"
+  credentials=geheim
+  syncdata=accesslog
+  logbase="cn=accesslog"
+  logfilter="(&(objectClass=auditWriteObject)(reqResult=0))"
+olcSyncrepl: rid=003
+  provider=ldaps://provider03.example.net
+  tls_reqcert=allow
+  type=refreshAndPersist
+  retry="60 10 120 5"
+  searchbase="ou=verwaltung,ou=firma,dc=example,dc=net"
+  filter="(objectClass=inetOrgPerson)"
+  attrs="cn,sn,givenName"
+  scope=sub
+  schemachecking=off
+  bindmethod=simple
+  binddn="uid=repl-user,ou=users,dc=example,dc=net"
+  credentials=geheim
+  syncdata=accesslog
+  logbase="cn=accesslog"
+  logfilter="(&(objectClass=auditWriteObject)(reqResult=0))"

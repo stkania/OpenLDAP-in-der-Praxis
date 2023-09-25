@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  ldapcontainer:
+    image: osixia/openldap:latest
+    container_name: ldapcontainer
+    ports:
+      - "10389:389"
+    volumes:
+      - ldapdata:/var/lib/ldap
+      - ldapconfig:/etc/ldap/slapd.d
+    networks:
+      - ldapbridge
+volumes:
+  ldapdata:
+  ldapconfig:
+
+networks:
+  ldapbridge:

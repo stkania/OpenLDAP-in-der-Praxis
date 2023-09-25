@@ -1,0 +1,17 @@
+dn: olcOverlay=translucent,olcDatabase={2}mdb,cn=config
+objectClass: olcOverlayConfig
+objectClass: olcTranslucentConfig
+olcOverlay: translucent
+olcTranslucentStrict: TRUE
+olcTranslucentNoGlue: TRUE
+olcTranslucentLocal: sn
+olcTranslucentRemote: mail
+olcTranslucentBindLocal: TRUE
+olcTranslucentPwModLocal: TRUE
+
+dn: olcDatabase=ldap,olcOverlay={0}translucent, olcDatabase={2}mdb,cn=config
+objectClass: olcLDAPConfig
+objectClass: olcTranslucentDatabase
+olcDatabase: ldap
+olcDbURI: ldap://provider02.example.net/
+olcDbACLBind: binddn="uid=proxy,dc=example,dc=net" credentials="geheim"
