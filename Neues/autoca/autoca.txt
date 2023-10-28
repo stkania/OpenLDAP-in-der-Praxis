@@ -1,0 +1,163 @@
+Das Overlays autoca
+Mit dem Overlay autoca wurde bei der neuen Version von OpenLDAP die Möglichkeit geschaffen, Zertifkate für Benutzer und Computer automatisch
+erstellen zu lassen. Im LDAP-Baum kann entweder die automatisch erstellte CA mit self signed certificates genutzt werden, Sie können aber auch die 
+eigene CA einbinden. 
+Als Erweiterung zum Buch möchte ich hier das Overlay etwas genauer betrachten. Hier soll die OpenLDAP eigene CA durch eine eigene ersetzt werden. 
+Zusätzlich möchte ich Ihnen zeigen, wie Sie die im Binärformat abgelegten Zertifikate der Benutzer und Computer in .PEM-Dateien umwandeln können, 
+um die Zertifikate anschließend für andere Aufgaben nutzen zu können. Denkbar wäre so ein Nutzung für eine 802.1x Authentifizierung oder für den Einsatz mit einem Radius-Server.
+
+Um das Overlay nutzen zu können, benötigen Sie als erstes ein Modul und das Overlay muss in die Konfiguration der entsprechende Datenbank eingebunden werden. Beides können Sie mit der folgenden LDIF-Datei realisieren:
+----------------
+dn: cn=module{0},cn=config
+changetype: modify
+add: olcModuleload
+olcModuleload: autoca.la
+
+changetype: modify
+add: olcModuleload
+olcModuleload: autoca.la
+root@ldap-r01:~# cat autoca-overlay.ldif 
+dn: olcOverlay={2}autoca,olcDatabase={2}mdb,cn=config
+objectClass: olcAutoCAConfig
+objectClass: olcOverlayConfig
+olcOverlay: {2}autoca
+olcAutoCADays: 3652
+olcAutoCAserverDays: 1826
+olcAutoCAuserDays: 365
+----------------
+
+Nachdem Sie die Konfiguration eingespielt haben, können Sie mit dem folgenden Kommando das Zertifikat und den Key anzeigen lassen:
+----------------
+ldapsearch -x -D cn=admin,dc=example,dc=net -W -LLL dc=example 'cACertificate;binary' 'cAPrivateKey;binary'
+----------------
+Wichtig ist, den Zugriff auf den Key hat nur der rootdn der Datenbank. Alle anderen Benutzer können sich lediglich das Zertifikat anzeigen lassen.
+
+Um eigene Zertifikate nutzen zu können, ändern Sie die Attribute in der obersten Ebenen des LDAP (hier dc=example,dc=net). Die beiden Attribute die Sie 
+anpassen müssen sind: 
+cACertificate;binary
+und
+cAPrivateKey;binary
+
+Wenn das Zertifikat nicht getauscht wird, dann würde immer das vom OpenLDAP erstellte self signed Certificate genutzt. Wie das Attribut schon zeigt, wir das Zertifikat im binary-Format gespeichert. Was aber wenn nur .PEM-Zertifikate vorhanden sind? Dann können Sie das Zertifikat und den Key mit den folgenden Kommandos umwandeln:
+---------------
+openssl rsa -inform pem -in cakey.pem -outform der -out cakey-binary.der
+
+openssl x509 -outform der -in cacert.pem -out cacert-binary.der
+--------------
+
+Anschließend tauschen Sie das Zertifikate und der Key mit der folgenden LDIF-Datei aus:
+----------------
+dn: dc=example,dc=net
+changetype: modify
+replace: cACertificate;binary
+cACertificate;binary:< file:///root/mycert/cacert-binary.der
+-
+replace: cAPrivateKey;binary
+cAPrivateKey;binary:< file:///root/mycert/cakey-binary.der
+---------------
+
+Jetzt fehlt nur noch eine ACL damit ein Benutzer sein Zertifikat und den Privatkey erstellen kann. Die ACL sollte weit oben angelegt werden, da es sich um eine ACL auf ein einzelnes Attribut handelt:
+---------------
+dn: olcDatabase={2}mdb,cn=config
+changetype: modify
+add: olcAccess
+olcAccess: {1}to attrs=pKCS8PrivateKey
+  by self ssf=128 write
+---------------
+
+Die ACL auf das Attribut pKCS8PrivateKey vererbt die Rechte an die beiden Attribute "userCertificate;binary" und "userPrivateKey;binary".
+
+Jetzt können der Benutzer selber und der rootdn das Zertifikat und den Schlüssel mit dem Kommando:
+---------------
+ldapsearch -x -D "cn=u1 verw,ou=users,ou=verwaltung,dc=example,dc=net" -W "cn=u1 verw" -LLL "userCertificate;binary" "userPrivateKey;binary"
+---------------
+
+erstellen. Alle anderen Benutzer können das Zertifikate lesen, nicht aber den Key.
+
+Sollen die Zertifikate später für andere Aufgaben genutzt werden, wie zum Beispiel für einen Radius-Server, werden die Zertifikate im PEM-Format benötigt. Das folgende kleine Skript extrahiert das Zertifikat und den Key, eines als Positionsparameter 
+übergebenen Benutzers, aus den binären Attributen. Es entstehen zwei PEM-Dateien.
+-------------
+#!/bin/bash
+#
+LDAPSEARCH='/opt/symas/bin/ldapsearch'
+MANAGERDN='cn=admin,dc=example,dc=net'
+URIP1='ldaps://ldap-r01.example.net'
+PASSWD='geheim'
+DC='net'
+TESTDIR=$(mktemp -dp ./)
+SEARCHOUT=output.binary
+USERDN=$1
+EXISTS=$($LDAPSEARCH -D $MANAGERDN -H $URIP1 -w $PASSWD -LLL  "$USERDN" dn)
+EXISTS=${#EXISTS}
+echo $EXISTS
+if [ $EXISTS -eq 0 ]
+then
+        echo "Benutzer/Host $USERDN ist nicht vorhanden"
+        exit 1
+fi
+RDN=$(echo $USERDN | egrep '^uid=|^cn=')
+if [ -z $RDN ]
+then
+        echo " Kein RDN angegeben Benutzer im Format "
+        echo " uid=object oder cn=object angeben"
+        exit 2
+fi
+
+NOCERT=$($LDAPSEARCH -D $MANAGERDN -H $URIP1 -w $PASSWD -LLL  "$USERDN" | grep  'userCertificate;binary' )
+echo "wert: $NOCERT"
+NOCERT=${#NOCERT}
+echo "zahl: $NOCERT"
+if [ $NOCERT -eq 0  ]
+then
+        echo "Benutzer/Host hat noch kein Zertifikat"
+        while [ "$CREATECERT" != "J" -a "$CREATECERT" != "N" ]
+        do
+                echo -n "Soll ein Zertifikat erstellt werden (j/n)? "
+                read CREATECERT
+                CREATECERT=$(echo $CREATECERT | tr a-z A-Z)
+        done
+        if [ $CREATECERT == "J" ]
+        then
+                $LDAPSEARCH -D $MANAGERDN -H $URIP1 -w $PASSWD -LLL  "$USERDN"  'userCertificate;binary' 'userPrivateKey;binary' >/dev/null
+        else
+                echo "Kein Zertifikat vorhanden und es wurde auch keins erstellt"
+                exit 1
+        fi
+fi
+echo "Suche das Zertifikat für $USERDN mit ldapsearch"
+$LDAPSEARCH -D $MANAGERDN -H $URIP1 -w $PASSWD -LLL  "$USERDN"  'userCertificate;binary' > $SEARCHOUT 2>&1
+echo "Erstelle das Zertifikat"
+echo "-----BEGIN CERTIFICATE-----" > $TESTDIR/"${USERDN}"-usercert.pem
+sed -e "/^dn:/d" -e "/^ dc=${DC}/d" -e "s/userCertificate;binary:://" -e "/^$/d" $SEARCHOUT >> $TESTDIR/"${USERDN}"-usercert.pem
+echo "-----END CERTIFICATE-----" >> $TESTDIR/"${USERDN}"-usercert.pem
+
+echo "Suche den Key für $USERDN mit ldapsearch"
+$LDAPSEARCH -D $MANAGERDN -H $URIP1 -w $PASSWD -LLL  "$USERDN" 'userPrivateKey;binary'  > $SEARCHOUT 2>&1
+echo "Erstelle den Key"
+echo "-----BEGIN PRIVATE KEY-----" > $TESTDIR/"${USERDN}"-userkey.pem
+sed -e "/^dn:/d" -e "/^ dc=${DC}/d" -e "s/userPrivateKey;binary:://" -e "/^$/d" $SEARCHOUT >> $TESTDIR/"${USERDN}"-userkey.pem
+echo "-----END PRIVATE KEY-----" >> $TESTDIR/"${USERDN}"-userkey.pem
+
+echo "Inhalt des Zertifikats"
+openssl x509 -noout -text -in  $TESTDIR/"${USERDN}"-usercert.pem
+echo "Weiter mit RETURN" ; read
+
+echo "Vergleich der Prüfsumme des Zertifikate mit der des keys"
+echo ""
+echo "Prüfsumme des Keys:       $(openssl pkey -in $TESTDIR/"$USERDN"-userkey.pem -pubout -outform pem | sha256sum)"
+echo ""
+echo "Prüfsumme des Zertifikat: $(openssl x509 -in $TESTDIR/"$USERDN"-usercert.pem -pubkey -noout -outform pem | sha256sum)"
+-------------
+Was macht das Skript?:
+- Als erstes wird geprüft, ob der als Positionsparameter übergeben Benutzer existiert.
+- Im Anschluss wird geprüft, ob der Name als RDN also entweder als uid= oder cn= übergeben wurde
+- Dann wird geprüft, ob der Benutzer bereits ein Zertifikat besitzt. Wenn nicht, wir gefragt, ob eins erstellt werden soll. Ein "N" verlässt das Skript. Ein "J" erstellt Zertifikat und Key
+- Jetzt wird das binäre Zertifikat in eine .PEM-Datei umgewandelt und in einem temporären Verzeichnis abgelegt. Der Dateiname enthält den Benutzername.
+- Dann wird der binäre Key in eine .PEM-Datei umgewandelt und in einem temporären Verzeichnis abgelegt. Der Dateiname enthält den Benutzername.
+- Im Anschluss wir der Inhalt des Zertifikats ausgelesen und angezeigt
+- Zum Abschluss werden die Prüfsummen des Zertifikats und des Keys verglichen. Nur wenn beide identisch sind, passt der Key zum Zertifikat.
+
+In dem temporären Verzeichnis liegen jetzt zwei Dateien: Zum Einen das Zertifikat im PEM-Format und zum Anderen der Key im PEM-Format.
+
+Wichtig! 
+Für den Key wurde kein Passwort gesetzt.

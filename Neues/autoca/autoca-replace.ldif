@@ -1,0 +1,7 @@
+dn: dc=example,dc=net
+changetype: modify
+replace: cACertificate;binary
+cACertificate;binary:< file:///root/mycert/cacert-binary.der
+-
+replace: cAPrivateKey;binary
+cAPrivateKey;binary:< file:///root/mycert/cakey-binary.der

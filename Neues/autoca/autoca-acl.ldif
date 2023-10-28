@@ -1,0 +1,5 @@
+dn: olcDatabase={2}mdb,cn=config
+changetype: modify
+add: olcAccess
+olcAccess: {1}to attrs=pKCS8PrivateKey
+  by self ssf=128 write
