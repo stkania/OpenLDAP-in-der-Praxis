@@ -2,11 +2,3 @@ dn: cn=module{0},cn=config
 changetype: modify
 add: olcModuleload
 olcModuleload: autoca.la
-
-dn: olcOverlay={2}autoca,olcDatabase={2}mdb,cn=config
-objectClass: olcAutoCAConfig
-objectClass: olcOverlayConfig
-olcOverlay: {2}autoca
-olcAutoCADays: 3652
-olcAutoCAserverDays: 1826
-olcAutoCAuserDays: 365
