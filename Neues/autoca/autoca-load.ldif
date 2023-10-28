@@ -3,10 +3,6 @@ changetype: modify
 add: olcModuleload
 olcModuleload: autoca.la
 
-changetype: modify
-add: olcModuleload
-olcModuleload: autoca.la
-root@ldap-r01:~# cat autoca-overlay.ldif 
 dn: olcOverlay={2}autoca,olcDatabase={2}mdb,cn=config
 objectClass: olcAutoCAConfig
 objectClass: olcOverlayConfig
