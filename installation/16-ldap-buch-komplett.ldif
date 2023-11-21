@@ -3,65 +3,65 @@ objectClass: domain
 objectClass: dcObject
 dc: example
 
-dn: ou=users,dc=example,dc=net
+dn: ou=users,ou=firma,dc=example,dc=net
 ou: users
 objectClass: organizationalUnit
 
-dn: ou=groups,dc=example,dc=net
+dn: ou=groups,ou=firma,dc=example,dc=net
 ou: groups
 objectClass: organizationalUnit
 
-dn: cn=benutzer,ou=groups,dc=example,dc=net
+dn: cn=benutzer,ou=groups,ou=firma,dc=example,dc=net
 objectClass: posixGroup
 gidNumber: 10000
 cn: benutzer
 
-dn: ou=Verwaltung,dc=example,dc=net
+dn: ou=Verwaltung,ou=firma,dc=example,dc=net
 ou: Verwaltung
 objectClass: organizationalUnit
 objectClass: top
 
-dn: ou=Produktion,dc=example,dc=net
+dn: ou=Produktion,ou=firma,dc=example,dc=net
 ou: Produktion
 objectClass: organizationalUnit
 objectClass: top
 
-dn: ou=users,ou=Produktion,dc=example,dc=net
+dn: ou=users,ou=Produktion,ou=firma,dc=example,dc=net
 ou: users
 objectClass: organizationalUnit
 objectClass: top
 
-dn: ou=Adressen,ou=Produktion,dc=example,dc=net
+dn: ou=Adressen,ou=Produktion,ou=firma,dc=example,dc=net
 ou: Adressen
 objectClass: organizationalUnit
 objectClass: top
 
-dn: ou=groups,ou=Produktion,dc=example,dc=net
+dn: ou=groups,ou=Produktion,ou=firma,dc=example,dc=net
 ou: groups
 objectClass: organizationalUnit
 objectClass: top
 
-dn: ou=Adressen,ou=Verwaltung,dc=example,dc=net
+dn: ou=Adressen,ou=Verwaltung,ou=firma,dc=example,dc=net
 ou: Adressen
 objectClass: organizationalUnit
 objectClass: top
 
-dn: ou=groups,ou=Verwaltung,dc=example,dc=net
+dn: ou=groups,ou=Verwaltung,ou=firma,dc=example,dc=net
 ou: groups
 objectClass: organizationalUnit
 objectClass: top
 
-dn: ou=users,ou=Verwaltung,dc=example,dc=net
+dn: ou=users,ou=Verwaltung,ou=firma,dc=example,dc=net
 ou: users
 objectClass: organizationalUnit
 objectClass: top
 
-dn: ou=Adressen,dc=example,dc=net
+dn: ou=Adressen,ou=firma,dc=example,dc=net
 ou: Adressen
 objectClass: organizationalUnit
 objectClass: top
 
-dn: cn=u1 Prod,ou=users,ou=Produktion,dc=example,dc=net
+dn: cn=u1-Prod,ou=users,ou=Produktion,ou=firma,dc=example,dc=net
 objectClass: posixAccount
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
@@ -69,14 +69,14 @@ objectClass: person
 loginShell: /bin/bash
 homeDirectory: /home/u1-prod
 uid: u1-prod
-cn: u1 Prod
+cn: u1-Prod
 userPassword: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$ZGJmZGRkc3NzMTIzNDU$W+3A5630GWZE2pOfoT4pI8huoD9Uuss0tFw/CGmhIJ0
 uidNumber: 10001
 gidNumber: 10000
 sn: Prod
 givenName: u1
 
-dn: cn=u2 Prod,ou=users,ou=Produktion,dc=example,dc=net
+dn: cn=u2-Prod,ou=users,ou=Produktion,ou=firma,dc=example,dc=net
 objectClass: posixAccount
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
@@ -84,14 +84,14 @@ objectClass: person
 loginShell: /bin/bash
 homeDirectory: /home/u2-prod
 uid: u2-prod
-cn: u2 Prod
+cn: u2-Prod
 userPassword: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$ZGJmZGRkc3NzMTIzNDY$WhTyubew41XRmGwvqpcPcnN/ri2XhpBdnvHJO/tw69c
 uidNumber: 10002
 gidNumber: 10000
 sn: Prod
 givenName: u2
 
-dn: cn=prod al,ou=users,ou=Produktion,dc=example,dc=net
+dn: cn=prod-al,ou=users,ou=Produktion,ou=firma,dc=example,dc=net
 objectClass: posixAccount
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
@@ -99,7 +99,7 @@ objectClass: person
 loginShell: /bin/bash
 homeDirectory: /home/prod-al
 uid: prod-al
-cn: prod al
+cn: prod-al
 userPassword: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$ZGJmZGRkc3NzMTIzNDc$87VL92CE8AHQoS7vP4UpQetGJgLH39MdxjGlzIAMNWU
 uidNumber: 10003
 gidNumber: 10000
@@ -107,7 +107,7 @@ sn: al
 givenName: prod
 employeeType: Abteilungsleiter
 
-dn: cn=u1 Verw,ou=users,ou=Verwaltung,dc=example,dc=net
+dn: cn=u1-Verw,ou=users,ou=Verwaltung,ou=firma,dc=example,dc=net
 objectClass: posixAccount
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
@@ -115,14 +115,14 @@ objectClass: person
 loginShell: /bin/bash
 homeDirectory: /home/u1-verw
 uid: u1-verw
-cn: u1 Verw
+cn: u1-Verw
 userPassword: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$ZGJmZGRkc3NzMTIzNDg$0tRScpmdeUoX14JfH6SWf7mtx6sjL30vFR+IeVgmiK8
 uidNumber: 10004
 gidNumber: 10000
 sn: Verw
 givenName: u1
 
-dn: cn=U2 Verw,ou=users,ou=Verwaltung,dc=example,dc=net
+dn: cn=U2-Verw,ou=users,ou=Verwaltung,ou=firma,dc=example,dc=net
 objectClass: posixAccount
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
@@ -130,14 +130,14 @@ objectClass: person
 loginShell: /bin/bash
 homeDirectory: /home/u2-verw
 uid: u2-verw
-cn: U2 Verw
+cn: U2-Verw
 userPassword: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$ZGJmZGRkc3NzMTIzNDk$4gzEyjyU3kviVI867268fd4s/VZR8sVCMBNtD38AvRA
 uidNumber: 10005
 gidNumber: 10000
 sn: Verw
 givenName: U2
 
-dn: cn=Verw al,ou=users,ou=Verwaltung,dc=example,dc=net
+dn: cn=Verw-al,ou=users,ou=Verwaltung,ou=firma,dc=example,dc=net
 objectClass: posixAccount
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
@@ -145,7 +145,7 @@ objectClass: person
 loginShell: /bin/bash
 homeDirectory: /home/verw-al
 uid: verw-al
-cn: Verw al
+cn: Verw-al
 userPassword: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$ZGJmZGRkc3NzMTIzNDA$zGsNJMhksq6c7RfWWpQXa2WMBrdJ6sM7P1KH9AD9pCI
 uidNumber: 10006
 gidNumber: 10000
@@ -153,7 +153,7 @@ sn: al
 givenName: Verw
 employeeType: Abteilungsleiter
 
-dn: cn=verwaltung,ou=groups,ou=Verwaltung,dc=example,dc=net
+dn: cn=verwaltung,ou=groups,ou=Verwaltung,ou=firma,dc=example,dc=net
 objectClass: posixGroup
 gidNumber: 10002
 cn: verwaltung
@@ -161,7 +161,7 @@ memberUid: u1-verw
 memberUid: u2-verw
 memberUid: verw-al
 
-dn: cn=produktion,ou=groups,ou=Produktion,dc=example,dc=net
+dn: cn=produktion,ou=groups,ou=Produktion,ou=firma,dc=example,dc=net
 objectClass: posixGroup
 gidNumber: 10003
 cn: produktion
@@ -169,32 +169,32 @@ memberUid: prod-al
 memberUid: u1-prod
 memberUid: u2-prod
 
-dn: ou=Adressen,cn=u1 Verw,ou=users,ou=Verwaltung,dc=example,dc=net
+dn: ou=Adressen,cn=u1-Verw,ou=users,ou=Verwaltung,ou=firma,dc=example,dc=net
 ou: Adressen
 objectClass: organizationalUnit
 objectClass: top
 
-dn: ou=Adressen,cn=U2 Verw,ou=users,ou=Verwaltung,dc=example,dc=net
+dn: ou=Adressen,cn=U2-Verw,ou=users,ou=Verwaltung,ou=firma,dc=example,dc=net
 ou: Adressen
 objectClass: organizationalUnit
 objectClass: top
 
-dn: ou=Adressen,cn=Verw al,ou=users,ou=Verwaltung,dc=example,dc=net
+dn: ou=Adressen,cn=Verw-al,ou=users,ou=Verwaltung,ou=firma,dc=example,dc=net
 ou: Adressen
 objectClass: organizationalUnit
 objectClass: top
 
-dn: ou=Adressen,cn=prod al,ou=users,ou=Produktion,dc=example,dc=net
+dn: ou=Adressen,cn=prod-al,ou=users,ou=Produktion,ou=firma,dc=example,dc=net
 ou: Adressen
 objectClass: organizationalUnit
 objectClass: top
 
-dn: ou=Adressen,cn=u1 Prod,ou=users,ou=Produktion,dc=example,dc=net
+dn: ou=Adressen,cn=u1-Prod,ou=users,ou=Produktion,ou=firma,dc=example,dc=net
 ou: Adressen
 objectClass: organizationalUnit
 objectClass: top
 
-dn: ou=Adressen,cn=u2 Prod,ou=users,ou=Produktion,dc=example,dc=net
+dn: ou=Adressen,cn=u2-Prod,ou=users,ou=Produktion,ou=firma,dc=example,dc=net
 ou: Adressen
 objectClass: organizationalUnit
 objectClass: top
