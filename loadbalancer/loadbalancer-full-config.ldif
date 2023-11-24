@@ -15,6 +15,7 @@ objectClass: olcModuleList
 cn: module{0}
 olcModulePath: /opt/symas/lib/openldap
 olcModuleLoad: lloadd.la
+olcModuleLoad: argon2.la
 
 dn: olcDatabase={-1}frontend,cn=config
 objectClass: olcDatabaseConfig
