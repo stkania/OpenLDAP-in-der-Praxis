@@ -19,7 +19,7 @@ olcAccess: {3}to *
   by dn.exact=uid=ldap-admin,ou=users,dc=example,dc=net write
   by dn.exact=uid=lam-user,ou=users,dc=example,dc=net read
   by * break
-olcAccess: {4} to dn.exact="cn=u1 verw,ou=users,ou=verwaltung,dc=example,dc=net"
+olcAccess: {4} to dn.exact="cn=u1-verw,ou=users,ou=verwaltung,dc=example,dc=net"
   by peername.regex=192\.168\.56\.201 read
   by peername.regex=192\.168\.56\.12 read
   by * none
@@ -36,7 +36,4 @@ olcAccess: {7}to dn.sub=ou=verwaltung,dc=example,dc=net
 olcAccess: {8}to dn.sub=ou=produktion,dc=example,dc=net
   by set="this/manager & user" write by set="this/manager/secretary & user" write
   by "dn.children=ou=users,ou=produktion,dc=example,dc=net" read
-  by * none
-olcAccess: {9}to "dn.exact=ou=firma,dc=example,dc=net"
-  by users read
   by * none
