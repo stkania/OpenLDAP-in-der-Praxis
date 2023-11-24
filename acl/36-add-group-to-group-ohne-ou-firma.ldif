@@ -1,4 +1,4 @@
 dn: cn=pw-set,ou=groups,dc=example,dc=net
 changetype: modify
 add: Member
-Member: cn=stellvertreter,ou=groups,ou=firma,dc=example,dc=net
+Member: cn=stellvertreter,ou=groups,dc=example,dc=net

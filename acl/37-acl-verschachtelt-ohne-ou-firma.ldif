@@ -10,16 +10,16 @@ add: olcAccess
 olcAccess: {1} to attrs=userPassword
   by anonymous auth
   by self write
-  by dn.exact=uid=ldap-admin,ou=users,ou=firma,dc=example,dc=net write
+  by dn.exact=uid=ldap-admin,ou=users,dc=example,dc=net write
   by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth manage
-  by set="[cn=pw-set,ou=groups,ou=firma,dc=example,dc=net]/Member* & user" write
+  by set="[cn=pw-set,ou=groups,dc=example,dc=net]/Member* & user" write
   by * none
 -
 add: olcAccess
 olcAccess: {2} to attrs=shadowLastChange
   by anonymous auth
   by self write
-  by dn.exact=uid=ldap-admin,ou=users,ou=firma,dc=example,dc=net write
+  by dn.exact=uid=ldap-admin,ou=users,dc=example,dc=net write
   by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth manage
-  by set="[cn=pw-set,ou=groups,ou=firma,dc=example,dc=net]/Member* & user" write
+  by set="[cn=pw-set,ou=groups,dc=example,dc=net]/Member* & user" write
   by * none

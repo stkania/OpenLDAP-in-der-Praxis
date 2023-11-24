@@ -1,0 +1,6 @@
+dn: cn=pw-set,ou=groups,dc=example,dc=net
+objectClass: groupOfNames
+objectClass: top
+cn: pw-set
+Member: cn=al-prod,ou=users,ou=produktion,dc=example,dc=net
+Member: cn=al-verw,ou=users,ou=verwaltung,dc=example,dc=net

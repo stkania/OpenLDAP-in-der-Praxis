@@ -1,0 +1,6 @@
+dn: cn=stellvertreter,ou=groups,dc=example,dc=net
+objectClass: groupOfNames
+objectClass: top
+cn: stellvertreter
+Member: cn=u1-prod,ou=users,ou=produktion,dc=example,dc=net
+Member: cn=u1-verw,ou=users,ou=verwaltung,dc=example,dc=net
