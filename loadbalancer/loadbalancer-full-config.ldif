@@ -1,0 +1,97 @@
+dn: cn=config
+objectClass: olcGlobal
+cn: config
+olcLogLevel: stats
+olcPidFile: /var/symas/run/slapd.pid
+olcArgsFile: /var/symas/run/slapd.args
+olcToolThreads: 1
+
+dn: cn=schema,cn=config
+objectClass: olcSchemaConfig
+cn: schema
+
+dn: cn=module{0},cn=config
+objectClass: olcModuleList
+cn: module{0}
+olcModulePath: /opt/symas/lib/openldap
+olcModuleLoad: lloadd.la
+
+dn: olcDatabase={-1}frontend,cn=config
+objectClass: olcDatabaseConfig
+objectClass: olcFrontendConfig
+olcDatabase: {-1}frontend
+olcSizeLimit: 500
+olcAccess: {0}to * 
+  by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth manage
+  by * break
+olcAccess: {1}to dn=""  by * read
+olcAccess: {2}to dn.base="cn=subschema"  by * read
+olcPasswordHash: {ARGON2}
+
+dn: olcDatabase={0}config,cn=config
+objectClass: olcDatabaseConfig
+olcDatabase: {0}config
+olcRootDN: cn=admin,cn=config
+#olcRootPW: geheim
+olcRootPW: {ARGON2}$argon2i$v=19$m=4096,t=3,p=1$cXdlcnJ0enV6dWlvMTIz$G/l0lynf7ygdz0tG+E7S1fBibsFs/L80AUSisiGl/v4
+olcAccess: {0}to *
+  by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth manage
+
+dn: olcBackend={0}lload,cn=config
+objectClass: olcBackendConfig
+objectClass: olcBkLloadConfig
+olcBackend: {0}lload
+olcBkLloadBindconf: bindmethod=simple timeout=0 network-timeout=5 binddn="uid=
+ lloadd,ou=users,dc=example,dc=net" credentials="geheim" keepalive=0:0:0 tcp-u
+ ser-timeout=0 tls_cert="/opt/symas/etc/openldap/example-net-cert.pem" tls_key
+ ="/opt/symas//etc/openldap/example-net-key.pem" tls_cacert="/opt/symas/etc/op
+ enldap/cacert.pem"
+olcBkLloadIOThreads: 1
+olcBkLloadListen: ldap://:1389
+olcBkLloadListen: ldaps://:1636
+olcBkLloadSockbufMaxClient: 16777215
+olcBkLloadSockbufMaxUpstream: 16777215
+olcBkLloadMaxPDUPerCycle: 10
+olcBkLloadIOTimeout: 10000
+olcBkLloadFeature: proxyauthz
+olcBkLloadTLSCRLCheck: none
+olcBkLloadVerifyClient: never
+olcBkLloadTLSProtocolMin: 0.0
+olcBkLloadTLSShareSlapdCTX: TRUE
+olcBkLloadClientMaxPending: 0
+olcBkLloadWriteCoherence: 0
+
+dn: cn={0}tier 1,olcBackend={0}lload,cn=config
+objectClass: olcBkLloadTierConfig
+cn: {0}tier 1
+olcBkLloadTierType: roundrobin
+
+dn: cn={0}server 1,cn={0}tier 1,olcBackend={0}lload,cn=config
+objectClass: olcBkLloadBackendConfig
+cn: {0}server 1
+olcBkLloadBackendUri: ldaps://ldap01.example.net
+olcBkLloadNumconns: 10
+olcBkLloadBindconns: 5
+olcBkLloadRetry: 5000
+olcBkLloadMaxPendingOps: 50
+olcBkLloadMaxPendingConns: 10
+olcBkLloadStartTLS: critical
+olcBkLloadWeight: 1
+
+dn: cn={1}server 2,cn={0}tier 1,olcBackend={0}lload,cn=config
+objectClass: olcBkLloadBackendConfig
+cn: {1}server 2
+olcBkLloadBackendUri: ldaps://ldap02.example.net
+olcBkLloadNumconns: 10
+olcBkLloadBindconns: 5
+olcBkLloadRetry: 5000
+olcBkLloadMaxPendingOps: 50
+olcBkLloadMaxPendingConns: 10
+olcBkLloadWeight: 1
+
+dn: olcDatabase={1}monitor,cn=config
+objectClass: olcDatabaseConfig
+olcDatabase: {1}monitor
+olcAccess: {0}to dn.subtree="cn=monitor"
+  by dn.exact=cn=admin,cn=config read  
+
