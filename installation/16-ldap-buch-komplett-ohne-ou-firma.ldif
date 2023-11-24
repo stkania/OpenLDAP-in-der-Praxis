@@ -3,10 +3,6 @@ objectClass: domain
 objectClass: dcObject
 dc: example
 
-dn: dc=example,dc=net
-ou: firma
-objectClass: organizationalUnit
-
 dn: ou=users,dc=example,dc=net
 ou: users
 objectClass: organizationalUnit
