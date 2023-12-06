@@ -1,0 +1,10 @@
+dn: cn=it-staff,ou=groups,dc=example,dc=net
+objectClass: groupOfNames
+objectClass: top
+cn: it-staff
+member: cn={1993}kania,ou=users,dc=example,dc=net
+member: cn={2005}meier,ou=users,dc=example,dc=net
+member: cn={2001}ollenburg,ou=users,dc=example,dc=net
+member: cn={2019}schmidt,ou=users,dc=example,dc=net
+member: cn={1989}schmitz,ou=users,dc=example,dc=net
+

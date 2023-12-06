@@ -5,7 +5,7 @@ olcBackend: lload
 olcBkLloadBindconf: bindmethod=simple
   timeout=0
   network-timeout=5
-  binddn="uid=lloadd,ou=users,ou=firma,dc=example,dc=net"
+  binddn="uid=lloadd,ou=users,dc=example,dc=net"
   credentials="geheim"
   keepalive=0:0:0
   tcp-user-timeout=0

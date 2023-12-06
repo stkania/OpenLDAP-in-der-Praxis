@@ -8,4 +8,4 @@ objectClass: olcOverlayConfig
 objectClass: olcRefintConfig
 olcOverlay: refint
 olcRefintAttribute: memberURL uniqueMember member
-olcRefintNothing: cn=dummy,ou=users,ou=firma,dc=example,dc=net
+olcRefintNothing: cn=dummy,ou=users,dc=example,dc=net

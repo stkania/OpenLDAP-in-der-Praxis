@@ -1,0 +1,6 @@
+dn: uid=praktikant,ou=users,dc=example,dc=net
+objectClass: SimpleSecurityObject
+objectClass: dynamicObject
+objectClass: account
+uid: praktikant
+userPassword: $argon2i$v=19$m=4096,t=3,p=1$aWVncmVsaXVocmVsaXVoaXVo$XaM4udwt29uhWsflnneBaSUu/Rx6KGJf0p+NWCKTPts

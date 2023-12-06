@@ -1,4 +1,4 @@
-dn: cn=certuser,ou=users,ou=firma,dc=example,dc=net
+dn: cn=certuser,ou=users,dc=example,dc=net
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
 objectClass: person

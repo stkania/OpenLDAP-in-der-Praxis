@@ -1,4 +1,4 @@
-dn: cn=Mailingliste,ou=groups,dc=example,dc=net
+dn: cn=Mailingliste,ou=groups,ou=firma,dc=example,dc=net
 objectClass: groupOfURLs
 cn: Mailingliste
 memberURL: ldap:///dc=example,dc=net?mail?sub?(employeeType=Ingenieur)

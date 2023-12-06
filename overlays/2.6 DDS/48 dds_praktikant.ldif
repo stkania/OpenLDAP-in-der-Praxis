@@ -1,4 +1,4 @@
-dn: uid=praktikant,ou=users,dc=example,dc=net
+dn: uid=praktikant,ou=users,ou=firma,dc=example,dc=net
 objectClass: SimpleSecurityObject
 objectClass: dynamicObject
 objectClass: account

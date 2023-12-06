@@ -1,0 +1,5 @@
+dn: cn=demouser,ou=users,dc=example,dc=net
+objectClass: inetOrgPerson
+cn: demouser
+sn: User
+givenName: Demo

@@ -1,4 +1,4 @@
-dn: uid=lloadd,ou=users,ou=firma,dc=example,dc=net
+dn: uid=lloadd,ou=users,dc=example,dc=net
 objectClass: account
 objectClass: simpleSecurityObject
 objectClass: top

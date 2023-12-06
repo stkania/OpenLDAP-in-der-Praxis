@@ -1,31 +1,31 @@
-dn: cn=it-staff,ou=groups,dc=example,dc=net
+dn: cn=it-staff,ou=groups,ou=firma,dc=example,dc=net
 changetype:modify
 delete: member
-member: cn=kania,ou=users,dc=example,dc=net
+member: cn=kania,ou=users,ou=firma,dc=example,dc=net
 -
 delete: member
-member: cn=meier,ou=users,dc=example,dc=net
+member: cn=meier,ou=users,ou=firma,dc=example,dc=net
 -
 delete: member
-member: cn=ollenburg,ou=users,dc=example,dc=net
+member: cn=ollenburg,ou=users,ou=firma,dc=example,dc=net
 -
 delete: member
-member: cn=schmidt,ou=users,dc=example,dc=net
+member: cn=schmidt,ou=users,ou=firma,dc=example,dc=net
 -
 delete: member
-member: cn=schmitz,ou=users,dc=example,dc=net
+member: cn=schmitz,ou=users,ou=firma,dc=example,dc=net
 -
 add:member
-member: cn={1993}kania,ou=users,dc=example,dc=net
+member: cn={1993}kania,ou=users,ou=firma,dc=example,dc=net
 -
 add:member
-member: cn={2005}meier,ou=users,dc=example,dc=net
+member: cn={2005}meier,ou=users,ou=firma,dc=example,dc=net
 -
 add:member
-member: cn={2001}ollenburg,ou=users,dc=example,dc=net
+member: cn={2001}ollenburg,ou=users,ou=firma,dc=example,dc=net
 -
 add:member
-member: cn={2019}schmidt,ou=users,dc=example,dc=net
+member: cn={2019}schmidt,ou=users,ou=firma,dc=example,dc=net
 -
 add:member
-member: cn={1989}schmitz,ou=users,dc=example,dc=net
+member: cn={1989}schmitz,ou=users,ou=firma,dc=example,dc=net

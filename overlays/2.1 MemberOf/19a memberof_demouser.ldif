@@ -1,4 +1,4 @@
-dn: cn=demouser,ou=users,dc=example,dc=net
+dn: cn=demouser,ou=users,ou=firma,dc=example,dc=net
 objectClass: inetOrgPerson
 cn: demouser
 sn: User

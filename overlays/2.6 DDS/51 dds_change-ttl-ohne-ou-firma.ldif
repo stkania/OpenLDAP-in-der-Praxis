@@ -1,0 +1,4 @@
+dn: cn=praktikant,ou=users,dc=example,dc=net
+changetype: modify
+replace: entryTtl
+entryTtl: 300

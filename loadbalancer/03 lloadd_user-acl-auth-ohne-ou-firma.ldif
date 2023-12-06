@@ -1,0 +1,4 @@
+dn: olcDatabase={2}mdb,cn=config
+changetype: modify
+add: olcAccess
+olcAccess: {0}to attrs=uid,cn by dn.exact=uid=lloadd,ou=users,dc=example,dc=net auth by * break

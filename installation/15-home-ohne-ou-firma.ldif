@@ -3,17 +3,12 @@ objectClass: domain
 objectClass: dcObject
 dc: example
 
-dn: ou=firma,dc=example,dc=net
-ou=firma
-objectClass: top
-objectClass: organizationalUnit
-
-dn: ou=users,ou=firma,dc=example,dc=net
+dn: ou=users,dc=example,dc=net
 ou: users
 objectClass: top
 objectClass: organizationalUnit
 
-dn: ou=groups,ou=firma,dc=example,dc=net
+dn: ou=groups,dc=example,dc=net
 ou: groups
 objectClass: top
 objectClass: organizationalUnit

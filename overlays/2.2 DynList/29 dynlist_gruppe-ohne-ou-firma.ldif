@@ -1,4 +1,4 @@
-dn: cn=Ingenieure,ou=groups,ou=firma,dc=example,dc=net
+dn: cn=Ingenieure,ou=groups,dc=example,dc=net
 objectClass: groupOfURLs
 cn: Ingenieure
 memberURL: ldap:///dc=example,dc=net??sub?(employeeType=Ingenieur)

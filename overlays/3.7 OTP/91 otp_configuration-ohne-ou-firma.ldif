@@ -1,4 +1,4 @@
-dn: ou=users,ou=firma,dc=example,dc=net
+dn: ou=users,dc=example,dc=net
 changetype: modify
 add: objectClass
 objectClass: oathTOTPParams

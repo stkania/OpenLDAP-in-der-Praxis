@@ -11,4 +11,4 @@ objectClass: olcOverlayConfig
 objectClass: olcConstraintConfig
 olcOverlay: constraint
 olcConstraintAttribute: mail regex ^[[:alnum:]]+@[[:alnum:]]+\.[[:alnum:]]+$
-olcConstraintAttribute: mail regex ^[[:alnum:]]+@hanser-fachbuch.de$ restrict="ldap:///ou=redakteure,ou=firma,dc=example,dc=net??sub"
+olcConstraintAttribute: mail regex ^[[:alnum:]]+@hanser-fachbuch.de$ restrict="ldap:///ou=redakteure,dc=example,dc=net??sub"

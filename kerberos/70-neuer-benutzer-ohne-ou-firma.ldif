@@ -1,4 +1,4 @@
-dn: cn=ktom,ou=users,ou=firma,dc=example,dc=net
+dn: cn=ktom,ou=users,dc=example,dc=net
 cn: Kater Tom
 gidNumber: 10000
 givenName: Kater

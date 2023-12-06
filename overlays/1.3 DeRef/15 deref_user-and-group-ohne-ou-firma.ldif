@@ -1,0 +1,18 @@
+dn: cn=user_A,ou=users,dc=example,dc=net
+objectClass: inetOrgPerson
+givenName: Anna
+cn: user_A
+sn: User
+
+dn: cn=user_B,ou=users,dc=example,dc=net
+objectClass: inetOrgPerson
+givenName: Berta
+cn: user_B
+sn: User
+
+dn: cn=allusers,ou=groups,dc=example,dc=net
+objectClass: groupOfNames
+member: cn=user_A,ou=users,dc=example,dc=net
+member: cn=user_B,ou=users,dc=example,dc=net
+cn: allusers
+

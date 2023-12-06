@@ -11,7 +11,7 @@ fi
 BASE_DN="dc=example,dc=net"
 USER_DN=$1
 USER_MAIL=$2
-USER_OU="ou=users,ou=firma,dc=example,dc=net"
+USER_OU="ou=users,dc=example,dc=net"
 LDAP_SERVER=ldap://provider01.example.net
 USE_LDAPI=1 # set to "0" if userlogin is prefered
 USE_TLS=1 # if TLS should not be used set to "0"

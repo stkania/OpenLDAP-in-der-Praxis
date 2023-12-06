@@ -1,9 +1,9 @@
-dn: cn=benutzer,ou=groups,ou=firma,dc=example,dc=net
+dn: cn=benutzer,ou=groups,dc=example,dc=net
 objectClass: posixGroup
 gidNumber: 10000
 cn: benutzer
 
-dn: uid=u1,ou=users,ou=firma,dc=example,dc=net
+dn: uid=u1,ou=users,dc=example,dc=net
 objectClass: posixAccount
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
@@ -18,7 +18,7 @@ uidNumber: 10000
 sn: 1
 givenName: user
 
-dn: uid=u2,ou=users,ou=firma,dc=example,dc=net
+dn: uid=u2,ou=users,dc=example,dc=net
 objectClass: posixAccount
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
@@ -33,7 +33,7 @@ uidNumber: 10001
 sn: 2
 givenName: User
 
-dn: uid=u3,ou=users,ou=firma,dc=example,dc=net
+dn: uid=u3,ou=users,dc=example,dc=net
 objectClass: posixAccount
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
@@ -48,7 +48,7 @@ uidNumber: 10002
 sn: 3
 givenName: User
 
-dn: uid=u4,ou=users,ou=firma,dc=example,dc=net
+dn: uid=u4,ou=users,dc=example,dc=net
 objectClass: posixAccount
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
@@ -63,7 +63,7 @@ uidNumber: 10003
 sn: 4
 givenName: User
 
-dn: uid=u5,ou=users,ou=firma,dc=example,dc=net
+dn: uid=u5,ou=users,dc=example,dc=net
 objectClass: posixAccount
 objectClass: inetOrgPerson
 objectClass: organizationalPerson
@@ -78,17 +78,17 @@ uidNumber: 10004
 sn: 5
 givenName: User
 
-dn: cn=Namen,ou=groups,ou=firma,dc=example,dc=net
+dn: cn=Namen,ou=groups,dc=example,dc=net
 cn: Namen
 objectClass: groupOfNames
-member: uid=u1,ou=users,ou=firma,dc=example,dc=net
+member: uid=u1,ou=users,dc=example,dc=net
 
-dn: cn=unique,ou=groups,ou=firma,dc=example,dc=net
+dn: cn=unique,ou=groups,dc=example,dc=net
 cn: unique
 objectClass: groupOfUniqueNames
-uniqueMember: uid=u2,ou=users,ou=firma,dc=example,dc=net
+uniqueMember: uid=u2,ou=users,dc=example,dc=net
 
-dn: cn=urls,ou=groups,ou=firma,dc=example,dc=net
+dn: cn=urls,ou=groups,dc=example,dc=net
 cn: urls
 objectClass: groupOfURLs
-memberURL: uid=u3,ou=users,ou=firma,dc=example,dc=net
+memberURL: uid=u3,ou=users,dc=example,dc=net

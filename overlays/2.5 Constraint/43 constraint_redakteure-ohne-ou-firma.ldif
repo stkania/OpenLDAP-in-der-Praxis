@@ -1,0 +1,8 @@
+dn: ou=redakteure,dc=example,dc=net
+objectClass: organizationalUnit
+ou: redakteure
+
+dn: cn=redakteur,ou=redakteure,dc=example,dc=net
+objectClass: inetOrgPerson
+cn: redakteur
+sn: redakteur
