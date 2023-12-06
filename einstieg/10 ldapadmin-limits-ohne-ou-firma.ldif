@@ -1,0 +1,4 @@
+dn: olcDatabase={2}mdb,cn=config
+changetype: modify
+add: olcLimits
+olcLimits: dn.exact="cn=uid=ldap-admin,ou=users,dc=example,dc=net" time=unlimited size=unlimited

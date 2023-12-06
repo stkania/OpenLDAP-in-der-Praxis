@@ -1,0 +1,4 @@
+dn: cn=prod-al,ou=users,ou=Produktion,dc=example,dc=net
+changetype: modify
+add: mail
+mail: prod-al@example.net

@@ -11,46 +11,42 @@ dn: ou=groups,dc=example,dc=net
 ou: groups
 objectClass: organizationalUnit
 
-dn: ou=firma,dc=example,dc=net
-ou: firma
-objectClass: organizationalUnit
-
-dn: ou=Verwaltung,ou=firma,dc=example,dc=net
+dn: ou=Verwaltung,dc=example,dc=net
 ou: Verwaltung
 objectClass: organizationalUnit
 objectClass: top
 
-dn: ou=Produktion,ou=firma,dc=example,dc=net
+dn: ou=Produktion,dc=example,dc=net
 ou: Produktion
 objectClass: organizationalUnit
 objectClass: top
 
-dn: ou=users,ou=Produktion,ou=firma,dc=example,dc=net
+dn: ou=users,ou=Produktion,dc=example,dc=net
 ou: users
 objectClass: organizationalUnit
 objectClass: top
 
-dn: ou=Adressen,ou=Produktion,ou=firma,dc=example,dc=net
+dn: ou=Adressen,ou=Produktion,dc=example,dc=net
 ou: Adressen
 objectClass: organizationalUnit
 objectClass: top
 
-dn: ou=groups,ou=Produktion,ou=firma,dc=example,dc=net
+dn: ou=groups,ou=Produktion,dc=example,dc=net
 ou: groups
 objectClass: organizationalUnit
 objectClass: top
 
-dn: ou=Adressen,ou=Verwaltung,ou=firma,dc=example,dc=net
+dn: ou=Adressen,ou=Verwaltung,dc=example,dc=net
 ou: Adressen
 objectClass: organizationalUnit
 objectClass: top
 
-dn: ou=groups,ou=Verwaltung,ou=firma,dc=example,dc=net
+dn: ou=groups,ou=Verwaltung,dc=example,dc=net
 ou: groups
 objectClass: organizationalUnit
 objectClass: top
 
-dn: ou=users,ou=Verwaltung,ou=firma,dc=example,dc=net
+dn: ou=users,ou=Verwaltung,dc=example,dc=net
 ou: users
 objectClass: organizationalUnit
 objectClass: top

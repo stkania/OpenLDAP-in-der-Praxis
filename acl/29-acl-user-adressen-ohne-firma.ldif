@@ -7,5 +7,5 @@ olcAccess: {4} to filter=(objectClass=posixAccount)
 -
 add: olcAccess
 olcAccess: {5}to dn.regex=ou=adressen,cn=(.+),ou=users,ou=(.+),dc=example,dc=net$
-   by dn.regex=^$1,ou=users,ou=$2,dc=example,dc=net$ write
+   by dn.regex=^cn=$1,ou=users,ou=$2,dc=example,dc=net$ write
    by * none
