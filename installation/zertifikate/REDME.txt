@@ -1,0 +1,3 @@
+Bei den hier abgelegten Zertifikaten handelt es sich um selbst signierte wildcard-Zertifikate der commonname lautet *.example.net und passt somit zu allen Zertifikaten die hier im Buch genutzt werden.
+ACHTUNG!
+Diese Zertifikate dienen nur dazu, dass Sie für die Übungen im Buch keine eigenen Zertifikate erstelle müssen. Wildcard Zertifikate sollten in einer produktiven Umgebung NICHT genutzt werden
