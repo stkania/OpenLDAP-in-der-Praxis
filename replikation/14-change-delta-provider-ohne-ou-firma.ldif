@@ -2,15 +2,6 @@ dn: cn=module{0},cn=config
 changetype: modify
 add: olcModuleLoad
 olcModuleLoad: accesslog.la
-olcModuleLoad: syncprov.la
-
-dn: olcOverlay={0}syncprov,olcDatabase={2}mdb,cn=config
-changetype: add
-objectClass: olcOverlayConfig
-objectClass: olcSyncProvConfig
-olcOverlay: {0}syncprov
-olcSpCheckpoint: 100 10
-olcSpSessionlog: 200
 
 dn: olcDatabase={3}mdb,cn=config
 changetype: add
@@ -20,13 +11,13 @@ olcDatabase: {3}mdb
 olcDbDirectory: /var/symas/accesslog
 olcAccess: to dn.subtree="cn=accesslog"
   by dn.exact="cn=admin,dc=example,dc=net" read
-  by dn.exact="uid=repl-user,ou=users,ou=firma,dc=example,dc=net" read
+  by dn.exact="uid=repl-user,ou=users,dc=example,dc=net" read
 olcSuffix: cn=accesslog
 olcLastMod: TRUE
 olcMaxDerefDepth: 15
 olcReadOnly: FALSE
 olcRootDN: cn=config
-olcLimits: dn.exact="cn=uid=repl-user,ou=users,ou=firma,dc=example,dc=net" 
+olcLimits: dn.exact="cn=uid=repl-user,ou=users,dc=example,dc=net" 
   time=unlimited
   size=unlimited
 olcMonitoring: TRUE
