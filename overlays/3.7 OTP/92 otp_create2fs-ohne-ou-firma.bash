@@ -11,22 +11,20 @@ fi
 BASE_DN="dc=example,dc=net"
 USER_DN=$1
 USER_MAIL=$2
-USER_OU="ou=users,dc=example,dc=net"
-LDAP_SERVER=ldap://provider01.example.net
+USER_OU="ou=users,ou=verwaltung,dc=example,dc=net"
+LDAP_SERVER=ldaps://provider01.example.net
 USE_LDAPI=1 # set to "0" if userlogin is prefered
-USE_TLS=1 # if TLS should not be used set to "0"
+USE_TLS=0 # if TLS should not be used set to "0"
 LDAP_ADMIN="cn=admin,dc=example,dc=net"
 LDAP_ADMIN_PW="geheim"
 TOPT_ISSUER=stka
 USER_NAME=""
-PATH_FOR_SHARED_KEY="/root/sharedkey"
+PATH_FOR_SHARED_KEY="/root/sharedkey/"
+DATA_PATH=""
 USER_SHARED_KEY=""
 QR_TEXT=""
 SALT_LENGTH=20
-if [ ! -d $PATH_FOR_SHARED_KEY ]
-then
-        mkdir $PATH_FOR_SHARED_KEY
-fi
+SHA_ALGO="SHA1"
 if [ "$USE_TLS" -eq 1 ]
 then
         ACTIVATE_TLS="-ZZ"
@@ -40,33 +38,38 @@ then
         exit 2
 fi
 USER_NAME=$(echo "$USER_DN" | cut -d "," -f 1)
+USER_DIR=$USER_NAME
 # Benutzer vorhanden?
 if [ $USE_LDAPI -eq 1 ]
 then
-        USER_DN_IN_DB=$(ldapsearch -Q -Y EXTERNAL -LLL -H ldapi:/// \
-        -b $BASE_DN $USER_NAME dn 2>/dev/null | cut -d" " -f2)
+        echo "ldapsearch -Q -Y EXTERNAL -LLL -H ldapi:/// -b $BASE_DN $USER_NAME dn 2>/dev/null | cut -d" " -f2"
+	USER_DN_IN_DB=$(ldapsearch -Q -Y EXTERNAL -LLL -H ldapi:/// -b $BASE_DN $USER_NAME dn 2>/dev/null | cut -d" " -f2)
 else
-        USER_DN_IN_DB=$(ldapsearch -xLLL "$ACTIVATE_TLS" -D "$LDAP_ADMIN" \
-        -w "$LDAP_ADMIN_PW" -H "$LDAP_SERVER" -b $BASE_DN '($USER_NAME)' dn\ 
-        2>/dev/null | cut -d " " -f 2)
+        USER_DN_IN_DB=$(ldapsearch -xLLL "$ACTIVATE_TLS" -D "$LDAP_ADMIN" -w "$LDAP_ADMIN_PW" -H "$LDAP_SERVER" -b $BASE_DN '($USER_NAME)' dn 2>/dev/null | cut -d " " -f 2)
 fi
+
 if [ "${USER_DN,,}" != "${USER_DN_IN_DB,,}" ]
 then
         echo "User $USER_DN not found in database"
         exit 4
 fi
+if [ ! -d ${PATH_FOR_SHARED_KEY}${USER_NAME} ]
+then
+        mkdir ${PATH_FOR_SHARED_KEY}${USER_NAME}
+fi
+DATA_PATH="${PATH_FOR_SHARED_KEY}${USER_NAME}"
 USER_OU=${USER_OU,,}
 # Erstellen des Benutzer-Keys
-USER_SHARED_KEY="${PATH_FOR_SHARED_KEY}/${USER_NAME}-sharedkey.data"
+USER_SHARED_KEY="${DATA_PATH}/${USER_NAME}-sharedkey.data"
 touch $USER_SHARED_KEY
 chmod 600 $USER_SHARED_KEY
 openssl rand $SALT_LENGTH > $USER_SHARED_KEY
 USER_SHARED_KEY_BASE32=$(base32 $USER_SHARED_KEY)
-echo $USER_SHARED_KEY_BASE32 > ${PATH_FOR_SHARED_KEY}/${USER_NAME}-sharedkey.b64
+echo $USER_SHARED_KEY_BASE32 > ${DATA_PATH}/${USER_NAME}-sharedkey.b64
 # LDIF-Datei um den Benutzer zu aendern
 while read LINE
 do
-        echo $LINE >> $PATH_FOR_SHARED_KEY/${USER_NAME}-totp.ldif
+        echo $LINE >> $DATA_PATH/${USER_NAME}-totp.ldif
 done << EOT
 dn: $USER_DN
 changetype: modify
@@ -87,15 +90,13 @@ oathTOTPToken: $USER_DN
 EOT
 if [ $USE_LDAPI -eq 1 ]
 then
-        ldapmodify -Q -Y EXTERNAL -H ldapi:///  \
-        -f $PATH_FOR_SHARED_KEY/${USER_NAME}-totp.ldif
+        ldapmodify -Q -Y EXTERNAL -H ldapi:///  -f $DATA_PATH/${USER_NAME}-totp.ldif
 else
-        ldapmodify -x "$ACTIVATE_TLS" -D "$LDAP_ADMIN" -w "$LDAP_ADMIN_PW" \
-        -H "$LDAP_SERVER" -f $PATH_FOR_SHARED_KEY/${USER_NAME}-totp.ldif
+        ldapmodify -x "$ACTIVATE_TLS" -D "$LDAP_ADMIN" -w "$LDAP_ADMIN_PW" -H "$LDAP_SERVER" -f $DATA_PATH/${USER_NAME}-totp.ldif
 fi
 # Erstellen des QR-Codes
-QR_TEXT="otpauth://totp/$LDAP_SERVER:$USER_MAIL?secret=${USER_SHARED_KEY_BASE32}&issuer=${TOTP_ISSUER}&period=30&digits=6&algorithm=SHA1"
-echo $QR_TEXT |  qrencode -s9 -o $PATH_FOR_SHARED_KEY/${USER_MAIL}.png
+QR_TEXT="otpauth://totp/$LDAP_SERVER:$USER_MAIL?secret=${USER_SHARED_KEY_BASE32}&issuer=${TOTP_ISSUER}&period=30&digits=6&algorithm=${SHA_ALGO}"
+echo $QR_TEXT |  qrencode -s9 -o $DATA_PATH/${USER_MAIL}.png
 # Informationen ausgeben
 echo "Der Key für den Benutzer $USER_DN lautet $USER_SHARED_KEY_BASE32"
 echo "Sie finden den Key in binärem Format unter $USER_SHARED_KEY"
