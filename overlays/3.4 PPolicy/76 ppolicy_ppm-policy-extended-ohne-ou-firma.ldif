@@ -1,4 +1,4 @@
-dn: cn=default,ou=policies,ou=firma,dc=example,dc=net
+dn: cn=default,ou=policies,dc=example,dc=net
 changetype: modify
 add: objectClass
 objectClass: pwdPolicyChecker

@@ -1,4 +1,4 @@
-dn: cn=special,ou=policies,ou=firma,dc=example,dc=net
+dn: cn=special,ou=policies,dc=example,dc=net
 cn: special
 objectClass: pwdPolicy
 objectClass: person
