@@ -1,0 +1,35 @@
+Mini Howto
+
+Wie kann, bei der Verwendung des Overlays autoCA das zu beginn automatisch erstellte root-Zertifikat und der dazugehörige Schlüssel geändert werden, sodass an der Stelle das eigen Zertifikat samt Schlüssel genutzt werden kann.
+
+Um das Zertifikat und den Schlüssel tauschen zu können, benötigen Sie als erstes das root-Zertifikat (im Beispiel cacert.pem) und den Schlüssel (im Beispiel cakey.pem). Achten Sie darauf, dass Sie im Besitz des Passworts zu dem Schlüssel sind.
+
+Leider kann der OpenLDAP mit dem Zertifikat und dem Schlüssel im "PEM"-Format nichts anfangen. Sowohl des Zertifikat als auch der Schlüssel müssen im binären "DER"-Format vorliegen. Aus dem Grund ist es notwendig, dass Sie als erstes beide Dateien umwandeln. Das geschieht mit den folgenden beiden Kommandos:
+
+openssl x509 --inform pem --in cacert.pem --outform der --out cacert-binary.der
+
+openssl rsa --inform pem --in cakey.pem --outform der --out cakey-binary.der
+
+Für das nachfolgende Beispiel habe ich die Dateien nach /opt/symas/etc/openldap/ kopiert.
+
+Achten Sie darauf, dass der Benutzer unter dem der slapd läuft (im Beispiel openldap) das Leserecht an den Dateien besitzt.
+
+Jetzt kann die LDIF-Datei zum Austausch des Schlüssels und des Zertifikats erstellt werden. Hier ein Beispiel:
+
+Das Zertifikat und er Schlüssel befinden sich im root-Objekt Ihres LDAP-Baums (im Beispiel dc=example,dc=net)
+
+------------
+dn: dc=example,dc=net
+changetype: modify
+replace: cACertificate;binary
+cACertificate;binary:< file:///opt/symas/etc/openldap/cacert-binary.der
+-
+replace: cAPrivateKey;binary
+cAPrivateKey;binary:< file:///opt/symas/etc/openldap/cakey-binary.der
+------------
+
+Jetzt können Sie bei einem Ihrer Benutzer das Zertifikat und den Schlüssel wie gewohnt erstellen. Wenn Sie bereits Benutzer mit dem Anfangszertifikat und dem Anfangsschlüssel belegt haben, gibt es für Sie nur die Möglichkeit, die beiden Attribute bei den Benutzern zu löschen und durch die Suche neu zu generieren.
+
+ldapsearch -x -D cn=admin,dc=example,dc=net -W  cn=u1-verw "userCertificate;binary" "userPrivateKey;binary"
+
+Würde das Zertifikat und den Schlüssel mit dem neuen Zertifikat erstellen.

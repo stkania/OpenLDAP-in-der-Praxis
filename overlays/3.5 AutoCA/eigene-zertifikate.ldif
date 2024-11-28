@@ -1,0 +1,7 @@
+dn: dc=example,dc=net
+changetype: modify
+replace: cACertificate;binary
+cACertificate;binary:< file:///opt/symas/etc/openldap/cacert-binary.der
+-
+replace: cAPrivateKey;binary
+cAPrivateKey;binary:< file:///opt/symas/etc/openldap/cakey-binary.der
