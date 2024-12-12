@@ -10,7 +10,7 @@ olcSyncrepl: rid=002
   scope=sub
   schemachecking=off
   bindmethod=simple
-  binddn="uid=repl-verwaltung,ou=users,ou=firma,dc=example,dc=net"
+  binddn="uid=repl-verwaltung,ou=users,dc=example,dc=net"
   credentials=geheim
   syncdata=accesslog
   logbase="cn=accesslog"
@@ -24,7 +24,7 @@ olcSyncrepl: rid=003
   scope=sub
   schemachecking=off
   bindmethod=simple
-  binddn="uid=repl-verwaltung,ou=users,ou=firma,dc=example,dc=net"
+  binddn="uid=repl-verwaltung,ou=users,dc=example,dc=net"
   credentials=geheim
   syncdata=accesslog
   logbase="cn=accesslog"
