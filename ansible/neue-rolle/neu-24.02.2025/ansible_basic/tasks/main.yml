@@ -1,0 +1,5 @@
+---
+# tasks file for ldapservers
+- import_tasks: ansible_basic.yml
+  tags:
+    - init_ansible_basic

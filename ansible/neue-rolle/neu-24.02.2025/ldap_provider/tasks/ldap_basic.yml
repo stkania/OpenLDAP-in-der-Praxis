@@ -1,0 +1,427 @@
+---
+  - name: Check that variables are defined
+    assert:
+      that:
+        - openldap_version is defined
+        - openldap_gid is defined
+        - openldap_uid is defined
+        - openldap_user is defined
+        - openldap_group is defined
+        - openldap_config is defined
+        - openldap_options is defined
+        - ansible_uid is defined
+        - ansible_gid is defined  
+        - user_ou is defined
+        - group_ou is defined
+        - root_dn is defined
+        - root_pw is defined
+        - main_repl_pw is defined
+        - config_repl_pw is defined
+        - cn_config_root_pw is defined
+        - ldap_modules is defined
+        - ldap_schema is defined
+        - ldap_index is defined
+        - db_max_size is defined
+        - key_suffix is defined
+        - cert_suffix is defined
+        - tlsca_file is defined
+        - cacert_name is defined
+        - cert_name is defined
+        - key_name is defined
+        - cert_dest is defined
+        - ldap_admin is defined
+        - repl_user is defined
+        - ca_key_bits is defined
+        - user_key_bits is defined
+        - server_key_bits is defined
+        - olc_password is defined
+        - server_id is defined
+        - syncprov_checkpoint is defined
+        - syncprov_sessionlog is defined
+        - repl_retry is defined
+        - repl_type is defined
+        - db_max_size_access is defined
+        - first_server is defined
+        - accesslog_purge is defined
+        - ldap_top is defined
+        - ldap_tdl is defined
+        - dns_name is defined
+
+  - name: reread packagelist
+    apt:
+      update_cache: yes
+      cache_valid_time: 86400
+
+  - name: install aditional packages
+    apt:
+      name:
+        - argon2
+        - gnupg2
+        - python3-ldap 
+
+  - name: Create group openldap
+    group:
+      name: "{{openldap_group}}"
+      gid: "{{openldap_gid}}"
+      state: present
+
+  - name: Add user "openldap" to server
+    user:
+      name: "{{openldap_user}}"
+      comment: "OpenLDAP Service account"
+      uid: "{{ openldap_uid }}"
+      shell: /bin/false
+      home: /opt/symas/
+      group: "{{openldap_group}}"
+
+  - name: Add symas pgp-key to keyring file
+    ansible.builtin.apt_key:
+      id: de597fbc7cf677b9342ec82cda26a148887dcbeb
+      url: https://repo.symas.com/repo/gpg/RPM-GPG-KEY-symas-com-signing-key
+      keyring: /etc/apt/trusted.gpg.d/symas.gpg
+
+  - name: copy symas26.list as source for apt
+    copy:
+      src: files/symas26.list
+      dest: /etc/apt/sources.list.d/
+      owner: root
+      group: root
+      mode: '0644'
+
+  - name: reread packagelist
+    apt:
+      update_cache: yes
+
+  - name: install symas packages
+    apt:
+      name:
+        - symas-openldap-clients
+        - symas-openldap-server
+        - libsasl2-modules-gssapi-mit
+
+##################################################################### 
+# START Change running slapd as root to run as user and group "ldap"#
+#####################################################################
+
+# Copy own symas-openldap-service.service file       
+  - name: copy symas-openldap-service.service to /lib/systemd/service
+    copy:
+      src: files/symas-openldap-server.service
+      dest: /lib/systemd/system/symas-openldap-server.service
+      owner: root
+      group: root
+      mode: '0644'
+
+# Generate the symas-openldap file for variables in /etc/default/symas-openldap
+  - name: generating /etc/default/symas-openldap from template
+    template:
+     src: symas-openldap-default.j2
+     dest: /etc/default/symas-openldap
+     owner: "{{ansible_user}}"
+     group: "{{ansible_group}}"
+     mode: '664'
+
+  - name: Create directory for ldapi-socket (without ansible-user can't do changes)
+    file:
+      path: /run/slapd
+      state: directory
+      mode: 0755
+
+  - name: Create a symbolic link to ldapi-socket (without ansible-user can't do changes)
+    file:
+      src: /var/symas/run/ldapi
+      dest: /run/slapd/ldapi
+      state: link
+
+# Setting permissions so non-root-user can access database and run directory
+  - name: setting permissions for database directory
+    ansible.builtin.file:
+      path: /var/symas/openldap-data
+      owner: "{{openldap_user}}"
+      group: "{{openldap_group}}"
+      mode: '0770'
+
+  - name: Create directory /var/symas/accesslog for delta-syncrepl on provider only
+    file:
+      path: /var/symas/accesslog
+      state: directory
+      mode: '0770'
+      owner: "{{openldap_user}}"
+      group: "{{openldap_group}}"
+
+# Setting permissions for /var/symas/run
+  - name: setting permissions for /var/symas/run
+    ansible.builtin.file:
+      path: /var/symas/run
+      owner: "{{openldap_user}}"
+      group: "{{openldap_group}}"
+      mode: '0770'
+
+# Create the directory for dynamic config 
+  - name: create /opt/etc/openldap/slapd.d
+    ansible.builtin.file:
+      path: /opt/symas/etc/openldap/slapd.d
+      state: directory
+      mode: '0770'
+      owner: "{{openldap_user}}"
+      group: "{{openldap_group}}"
+#################################################################### 
+# Ende Change running slapd as root to run as user and group "ldap"#
+####################################################################
+
+      # Generating the cn=config from template      
+  - name: generating cn=config LDIF
+    template:
+      src: provider_main_config.j2
+      dest: /home/{{ansible_user}}/config.ldif
+      owner: "{{ansible_user}}"
+      group: "{{ansible_group}}"
+      mode: '660'
+
+#####################################################################################
+# Start configuring openldap, only if the directory cn=config not exists            #
+#  if directory exist don't configure openldap again.                               #
+#  to rerun configuration delete the content from /opt/openldap-current/etc/slapd.d #
+#####################################################################################
+  - name: Check if configuration allready exists, then skip next task
+    stat:
+      path: "{{openldap_config}}/cn=config"
+    register: is_configured
+     
+  - name: add new basic-configuration
+    shell: 
+      cmd: /opt/symas/sbin/slapadd -n 0 -F {{openldap_config}} -l /home/{{ansible_user}}/config.ldif
+      executable: /bin/bash
+    when: not is_configured.stat.exists
+
+  - name: set ownership for cn=config to  openldap-user und openldap-group
+    file:
+      path: "{{openldap_config}}"
+      owner: "{{openldap_user}}"
+      group: "{{openldap_group}}"
+      mode: 0770
+      recurse: yes
+
+  - name: reload systemd
+    command: systemctl daemon-reload
+    when: not is_configured.stat.exists
+
+  - name: restart slapd after configur
+    command: systemctl restart symas-openldap-server.service
+    when: not is_configured.stat.exists
+#####################################################################################
+# Ende configuring openldap, only if the directory cn=config not exists             #
+#  if directory exist don't configure openldap again.                               #
+#  to rerun configuration delete the content from /opt/openldap-current/etc/slapd.d #
+#####################################################################################
+
+#####################
+# starting TLS-setup#
+#####################
+
+  - name: Create directory /opt/symas/etc/openldap/<inventory_hostname> for certificates
+    file:
+      path: /opt/symas/etc/openldap/{{inventory_hostname}}/
+      state: directory
+      mode: '0770'
+      owner: "{{openldap_user}}"
+      group: "{{openldap_group}}"
+
+# Copy certificate by hostname to all LDAP-server
+      
+  - name: copy certificate-key-file
+    copy:
+      src: files/{{inventory_hostname}}/{{inventory_hostname}}{{key_suffix}}
+      dest: "{{cert_dest}}/{{inventory_hostname}}/"
+      owner: root
+      group: "{{openldap_group}}"
+      mode: '640'
+
+  - name: copy certificate-cert-file
+    copy:
+      src: files/{{inventory_hostname}}/{{inventory_hostname}}{{cert_suffix}}
+      dest: "{{cert_dest}}/{{inventory_hostname}}/"
+      owner: root
+      group: "{{openldap_group}}"
+      mode: '640'
+
+  - name: copy root-certificate
+    copy:
+      src: files/{{inventory_hostname}}/{{tlsca_file}}
+      dest: "{{cert_dest}}/{{inventory_hostname}}/"
+      owner: root
+      group: "{{openldap_group}}"
+      mode: '640'
+
+# Maker sure all certificates have the same name, for multi provider replication
+# create a link for cert, key, and cacert to openldap directory
+  - name: link certificate-key-file
+    file:
+      src: "{{cert_dest}}{{inventory_hostname}}/{{inventory_hostname}}{{key_suffix}}"
+      dest: "{{cert_dest}}{{key_name}}"
+      state: link
+
+  - name: link certificate-cert-file
+    file:
+      src: "{{cert_dest}}{{inventory_hostname}}/{{inventory_hostname}}{{cert_suffix}}"
+      dest: "{{cert_dest}}{{cert_name}}"
+      state: link
+
+  - name: link root-certificate
+    file:
+      src: "{{cert_dest}}{{inventory_hostname}}/{{tlsca_file}}"
+      dest: "{{cert_dest}}{{cacert_name}}"
+      state: link
+
+# Create the LDAP-client config file /opt/symas/openldap/ldap.conf
+  - name: create empty /opt/symas/etc/openldap/ldap.conf
+    ansible.builtin.file:
+      path: /opt/symas/etc/openldap/ldap.conf
+      state: touch
+      owner: root
+      group: root
+      mode: '644'
+
+# Adding all nessacary lines to /opt/symas/etc/openldap/ldap.conf
+  - name: add BASE, URI and TLS_CACERT line to ldap.conf
+    blockinfile: 
+      path: /opt/symas/etc/openldap/ldap.conf
+      block: |
+          BASE {{ldap_top}}
+          URI ldap://{{inventory_hostname}}.{{dns_name}}
+          TLS_CERT {{cert_dest}}/{{inventory_hostname}}/{{tlsca_file}}
+          TLS_REQCERT allow
+
+###################################################################################################
+# Adding TLS to cn=config must be run twice, because for ansible each change will be a single task#
+# after a change slapd will restart but with just one TLS-attribute it will fail                  #
+# so the task must be defined twice, first time with "ignore_errors: True"                        #
+###################################################################################################
+
+  - name: add certifcate-file first run to cn=config
+    ignore_errors: True
+    ldap_attrs:
+      dn: "cn=config"
+      attributes:
+        olcTLSCertificateFile: "{{cert_dest}}{{cert_name}}"
+        olcTLSCertificateKeyFile: "{{cert_dest}}{{key_name}}"
+      state: exact
+
+  - name: add certifcate-file second run to cn=config
+    ldap_attrs:
+      dn: "cn=config"
+      attributes:
+        olcTLSCertificateFile: "{{cert_dest}}{{cert_name}}"
+        olcTLSCertificateKeyFile: "{{cert_dest}}{{key_name}}"
+      state: exact
+ 
+# Configure root-certificate of own CA to all servers        
+  - name: add root-certifcate of CA to cn=config
+    ldap_attrs:
+      dn: "cn=config"
+      attributes:
+        olcTLSCACertificateFile: "{{cert_dest}}{{cacert_name}}"
+      state: exact
+#----------------------------
+#
+#  - name: add certifcate-file first run to cn=config
+#    ignore_errors: True
+#    ldap_attrs:
+#      dn: "cn=config"
+#      name: "{{ item.key }}" 
+#      values: "{{ item.value }}" 
+#      state: exact
+#    with_dict:
+#      olcTLSCertificateFile: "{{cert_dest}}/{{inventory_hostname}}/{{inventory_hostname}}{{cert_suffix}}"
+#      olcTLSCertificateKeyFile: "{{cert_dest}}/{{inventory_hostname}}/{{inventory_hostname}}{{key_suffix}}"
+#
+#  - name: add certifcate-file second run to cn=config
+#    ldap_attrs:
+#      dn: "cn=config"
+#      name: "{{ item.key }}" 
+#      values: "{{ item.value }}" 
+#      state: exact
+#    with_dict:
+#      olcTLSCertificateFile: "{{cert_dest}}/{{inventory_hostname}}/{{inventory_hostname}}{{cert_suffix}}"
+#      olcTLSCertificateKeyFile: "{{cert_dest}}/{{inventory_hostname}}/{{inventory_hostname}}{{key_suffix}}"
+ 
+## Configure root-certificate of own CA to all servers        
+#  - name: add root-certifcate of CA to cn=config
+#    ldap_attrs:
+#      dn: "cn=config"
+#      name: olcTLSCACertificateFile
+#----------------------------
+################
+# End TLS setup#
+################
+
+###################################
+# Start setting up initial objects#
+###################################
+  - name: generating  LDIF for initial objects
+    template:
+      src: first-objects.j2
+      dest: /home/{{ansible_user}}/first-objects.ldif
+      owner: "{{ansible_user}}"
+      group: "{{ansible_group}}"
+      mode: '660'      
+    when: inventory_hostname == first_server
+
+  - name: add initial objects to main DB
+    ignore_errors: True
+    shell: 
+      cmd: /opt/symas/bin/ldapadd -Y EXTERNAL -H ldapi:/// -f /home/{{ansible_user}}/first-objects.ldif
+      executable: /bin/bash
+    when: inventory_hostname == first_server
+
+#################################
+# End setting up initial objects#
+#################################
+
+###############################################
+# Start setting up delta-sync-repl for main-db#
+# only on provider                            #
+###############################################
+
+  - name: generating deltasyncrepl LDIF for main DB
+    template:
+      src: main_db_repl.j2
+      dest: /home/{{ansible_user}}/main-db-repl.ldif
+      owner: "{{ansible_user}}"
+      group: "{{ansible_group}}"
+      mode: '660'
+
+  - name: add deltasyncrepl for main DB
+    shell: 
+      cmd: /opt/symas/bin/ldapmodify -Y EXTERNAL -H ldapi:/// -f /home/{{ansible_user}}/main-db-repl.ldif
+      executable: /bin/bash
+    when: not is_configured.stat.exists 
+
+#############################################
+# End setting up delta-sync-repl for main-db#
+#############################################
+  - name: Pause for 3 seconds befor setting up replication of main-DB 
+    pause:
+      seconds: 3
+
+#############################################
+# Start setting up replication for cn=config#
+# only on provider                          #
+#############################################
+
+  - name: generate cn=config replication LDIF
+    template:
+      src: repl_config.j2
+      dest: /home/{{ansible_user}}/repl_config.ldif
+      owner: "{{ansible_user}}"
+      group: "{{ansible_group}}"
+      mode: '660'
+
+  - name: add replication of cn=config to all provider
+    shell: 
+      cmd: /opt/symas/bin/ldapmodify -Y EXTERNAL -H ldapi:/// -f /home/{{ansible_user}}/repl_config.ldif
+      executable: /bin/bash
+    when: not is_configured.stat.exists
+###########################################
+# End setting up replication for cn=config#
+###########################################

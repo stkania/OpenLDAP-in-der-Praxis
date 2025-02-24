@@ -1,0 +1,22 @@
+dn: {{ldap_top}}
+objectClass: domain
+objectClass: dcObject
+dc: {{ldap_tdl}}
+
+dn: ou={{user_ou}},{{ldap_top}}
+objectClass: organizationalUnit
+ou: {{user_ou}}
+
+dn: ou={{group_ou}},{{ldap_top}}
+objectClass: organizationalUnit
+ou: {{group_ou}}
+
+dn: uid={{ldap_admin}},ou={{user_ou}},{{ldap_top}}
+objectClass: simpleSecurityObject
+objectClass: account
+userPassword: {{ldap_admin_pw}}
+
+dn: uid={{repl_user}},ou={{user_ou}},{{ldap_top}}
+objectClass: simpleSecurityObject
+objectClass: account
+userPassword: {{repl_user_pw}}

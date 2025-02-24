@@ -1,0 +1,15 @@
+[Unit]
+Description=Symas OpenLDAP Server Daemon
+After=network-online.target
+Documentation=man:slapd
+Documentation=man:slapd-config
+Documentation=man:slapd-mdb
+
+[Service]
+Type=notify
+EnvironmentFile=/etc/default/symas-openldap
+ExecStart=/opt/symas/lib/slapd -d 0 -h ${SLAPD_URLS}  -u ${SLAPD_USER} -g ${SLAPD_GROUP} -F ${SLAPD_CONF}
+
+[Install]
+WantedBy=multi-user.target
+

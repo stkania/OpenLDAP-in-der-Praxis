@@ -1,0 +1,91 @@
+dn: cn=config
+objectClass: olcGlobal
+cn: config
+olcLogLevel: sync
+olcLogLevel: stats
+olcPidFile: /var/symas/run/slapd.pid
+olcArgsFile: /var/symas/run/slapd.args
+olcToolThreads: 1
+{% set count = namespace(value=1) %}
+{% for item in server_id %}
+olcServerID: {{count.value}} {{item}}
+{% set count.value = count.value + 1 %}
+{% endfor %}
+
+dn: cn=schema,cn=config
+objectClass: olcSchemaConfig
+cn: schema
+
+dn: cn=module{0},cn=config
+objectClass: olcModuleList
+cn: module{0}
+olcModulePath: /opt/symas/lib/openldap
+{% for item in ldap_modules %}
+olcModuleLoad: {{item}}
+{% endfor %}
+
+{% for item in ldap_schema %}
+include: file:///opt/symas/etc/openldap/schema/{{item}}
+{% endfor %}
+
+dn: olcDatabase={-1}frontend,cn=config
+objectClass: olcDatabaseConfig
+objectClass: olcFrontendConfig
+olcDatabase: {-1}frontend
+olcSizeLimit: 500
+olcAccess: {0}to * 
+  by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth manage
+  by dn.exact=gidNumber={{ansible_gid}}+uidNumber={{ansible_uid}},cn=peercred,cn=external,cn=auth manage
+  by * break
+olcAccess: {1}to dn=""  by * read
+olcAccess: {2}to dn.base="cn=subschema"  by * read
+olcPasswordHash: {{olc_password}}
+
+dn: olcDatabase={0}config,cn=config
+objectClass: olcDatabaseConfig
+olcDatabase: {0}config
+olcRootDN: cn={{root_dn}},cn=config
+olcRootPW: {{cn_config_root_pw}}
+olcAccess: {0}to *
+  by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth manage
+  by dn.exact=gidNumber={{ansible_gid}}+uidNumber={{ansible_uid}},cn=peercred,cn=external,cn=auth manage
+  by dn.exact=uid={{ldap_admin}},ou={{user_ou}},{{ldap_top}} write
+  by dn.exact=uid={{repl_user}},ou={{user_ou}},{{ldap_top}} read
+
+dn: olcDatabase={1}monitor,cn=config
+objectClass: olcDatabaseConfig
+olcDatabase: {1}monitor
+olcAccess: {0}to dn.subtree="cn=monitor"
+  by dn.exact=cn={{root_dn}},cn=config read  
+  by dn.exact=cn={{root_dn}},{{ldap_top}} read
+
+dn: olcDatabase={2}mdb,cn=config
+objectClass: olcDatabaseConfig
+objectClass: olcMdbConfig
+olcDatabase: {2}mdb
+olcSuffix: {{ldap_top}}
+olcRootDN: cn={{root_dn}},{{ldap_top}}
+olcRootPW: {{root_pw}}
+olcSizeLimit: unlimited
+olcTimeLimit: unlimited
+olcDbCheckpoint: 512 30
+olcDbDirectory: /var/symas/openldap-data
+{% for item in ldap_index %}
+olcDbIndex: {{item}}
+{% endfor %}
+olcDbMaxSize: {{db_max_size}}
+olcAccess: {0} to * 
+  by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth manage
+  by dn.exact=gidNumber={{ansible_gid}}+uidNumber={{ansible_uid}},cn=peercred,cn=external,cn=auth manage
+  by dn.exact=uid={{ldap_admin}},ou={{user_ou}},{{ldap_top}} write
+  by dn.exact=uid={{repl_user}},ou={{user_ou}},{{ldap_top}} read
+  by * break
+olcAccess: {1} to attrs=userPassword
+  by anonymous auth by self write by * none
+olcLimits: {0} dn.exact="uid={{repl_user}},ou={{user_ou}},{{ldap_top}}"
+  time=unlimited
+  size=unlimited
+olcLimits: {1} dn.exact="uid={{ldap_admin}},ou={{user_ou}},{{ldap_top}}"
+  time=unlimited
+  size=unlimited
+

@@ -1,0 +1,82 @@
+dn: olcDatabase={3}mdb,cn=config
+changetype: add
+objectClass: olcDatabaseConfig
+objectClass: olcMdbConfig
+olcDatabase: {3}mdb
+olcDbDirectory: /var/symas/accesslog
+olcSuffix: cn=accesslog
+olcAccess: {0}to dn.subtree="cn=accesslog"
+  by dn.exact="uid={{repl_user}},ou={{user_ou}},{{ldap_top}}" read
+  by dn.exact="cn={{root_dn}},{{ldap_top}}" read
+olcLastMod: TRUE
+olcMaxDerefDepth: 15
+olcReadOnly: FALSE
+olcRootDN: cn=config
+olcLimits: dn.exact="cn=uid={{repl_user}},{{ldap_top}}" time=unlimited size=unlimited
+olcMonitoring: TRUE
+olcDbCheckpoint: 0 0
+olcDbIndex: entryCSN eq
+olcDbIndex: entryUUID eq
+olcDbIndex: objectClass eq
+olcDbIndex: reqEnd eq
+olcDbIndex: reqResult eq
+olcDbIndex: reqStart eq
+olcDbIndex: reqDN eq
+olcDbMode: 0600
+olcDbSearchStack: 16
+olcDbMaxsize: {{db_max_size_access}}
+
+dn: olcOverlay=syncprov,olcDatabase={3}mdb,cn=config
+changetype: add
+objectClass: olcOverlayConfig
+objectClass: olcSyncProvConfig
+olcOverlay: syncprov
+olcSpNoPresent: TRUE
+olcSpReloadHint: TRUE
+
+dn: olcOverlay={0}syncprov,olcDatabase={2}mdb,cn=config
+changetype: add
+objectClass: olcOverlayConfig
+objectClass: olcSyncProvConfig
+olcOverlay: {0}syncprov
+olcSpCheckpoint: {{syncprov_checkpoint}}
+olcSpSessionlog: {{syncprov_sessionlog}}
+
+dn: olcOverlay={1}accesslog,olcDatabase={2}mdb,cn=config
+changetype: add
+objectClass: olcOverlayConfig
+objectClass: olcAccessLogConfig
+olcOverlay: {1}accesslog
+olcAccessLogDB: cn=accesslog
+olcAccessLogOps: writes
+olcAccessLogSuccess: TRUE
+olcAccessLogPurge: {{accesslog_purge}}
+
+dn: olcDatabase={2}mdb,cn=config
+changetype: modify
+replace: olcSyncrepl
+{% set count1 = namespace(rid=1) %}
+{% for item in server_id %}
+olcSyncrepl: rid=10{{count1.rid}}
+  provider={{item}}
+  bindmethod=simple
+  timeout=0
+  network-timeout=0
+  binddn=uid={{repl_user}},ou={{user_ou}},{{ldap_top}}
+  credentials="{{main_repl_pw}}"
+  filter="(objectclass=*)"
+  searchbase="{{ldap_top}}"
+  logfilter="(&(objectClass=auditWriteObject)(reqResult=0))"
+  logbase=cn=accesslog
+  scope=sub
+  schemachecking=off
+  type=refreshAndPersist
+  retry="60 +"
+  syncdata=accesslog
+  keepalive=240:10:30
+  tls_reqcert=allow
+{% set count1.rid = count1.rid + 1 %}
+{% endfor %}
+-
+add: olcMultiprovider
+olcMultiprovider: TRUE

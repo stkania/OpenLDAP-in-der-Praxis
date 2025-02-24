@@ -1,0 +1,30 @@
+# Create replication entry for cn=config for all ldap-provider
+dn: olcOverlay=syncprov,olcDatabase={0}config,cn=config
+changetype: add
+objectClass: olcOverlayConfig
+objectClass: olcSyncProvConfig
+olcOverlay: syncprov
+
+dn: olcDatabase={0}config,cn=config
+changetype: modify
+replace: olcSyncRepl
+{% set count1 = namespace(rid=1) %}
+{% set count2 = namespace(server=0) %}
+{% for item in server_id %}
+olcSyncRepl: rid={{count1.rid}}
+  provider={{item}}
+  binddn="cn={{root_dn}},cn=config"
+  bindmethod=simple
+  credentials="{{config_repl_pw}}"
+  searchbase="cn=config"
+  type={{repl_type}}
+  retry={{repl_retry}}
+  timeout=1
+  tls_reqcert=allow
+{% set count1.rid = count1.rid + 1 %}
+{% set count2.server = count2.server + 1 %}
+{% endfor %}
+-
+add: olcMultiprovider
+olcMultiprovider: TRUE
+

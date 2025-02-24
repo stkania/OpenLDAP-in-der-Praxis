@@ -1,0 +1,2 @@
+deb [arch=amd64] https://repo.symas.com/repo/deb/main/release26 bullseye main
+# deb-src https://repo.symas.com/repo/deb/main/release26 bullseye main

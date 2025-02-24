@@ -1,0 +1,75 @@
+---
+  - name: Check that variables are defined
+    assert:
+      that:
+        - ansible_userid is defined
+        - ansible_user_name is defined
+        - ansible_user_pw is defined  
+        - ssh_path is defined
+        - ssh_key_src is defined
+        - ssh_key_dest is defined
+
+  - name: reread packagelist
+    apt:
+      update_cache: yes
+      cache_valid_time: 86400
+
+#Installing all needed packages 
+  - name: install package "sudo" and "whois"
+    apt:
+      name: 
+        - sudo
+        - whois
+
+# Create user ansible, this user will do all changes
+# I will use the samwe user in all my other roles          
+  - name: Add user "ansible" to server
+    user:
+      name: "{{ ansible_user_name }}"
+      comment: "ansible user"
+      uid: "{{ ansible_userid }}"
+      shell: /bin/bash
+      password: "{{ ansible_user_pw }}"
+      update_password: on_create
+
+# Create the .ssh directory to store the authorized_keys file
+  - name: create /home/{{ansible_user_name}}/.ssh
+    file:
+      path: "{{ ssh_path }}"
+      state: directory
+      mode: '0700'
+      owner: "{{ ansible_user_name }}"
+      group: "{{ ansible_user_name }}"
+
+# Copy the public-key for user ansible from ansible-host and create authorized_keys file        
+  - name: copy public-key from user ansible to host
+    copy:
+      src: "{{ ssh_key_src }}"
+      dest: "{{ ssh_key_dest }}"
+      owner: "{{ ansible_user_name }}"
+      group: "{{ ansible_user_name }}"
+      mode: '644'
+
+# Give user "ansible" root-permission on host with no password        
+  - name: copy "sudoers" to all ldap_server
+    copy:
+      src: files/sudoers
+      dest: /etc/sudoers
+      owner: root
+      group: root
+      mode: '440'
+      validate: /usr/sbin/visudo -csf %s
+
+
+# After setting up the configuration revoke root ssh-login
+  - name: replace "PermitRootLogin= yes" for ssh
+    replace:
+      path: /etc/ssh/sshd_config
+      regexp: '^PermitRootLogin yes$'
+      replace: '#PermitRootLogin prohibit-password'
+
+  - name: Restart service ssh
+    ansible.builtin.service:
+      name: ssh
+      state: restarted
+

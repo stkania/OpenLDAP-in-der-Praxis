@@ -1,0 +1,95 @@
+---
+#Version 2
+#
+# all passwords set to "geheim"
+# Passwordhash is alway Argon2
+# genareted with: echo -n "geheim" | argon2 "saltsaltsalt" -e
+openldap_version: 2.6.x
+# openldap_gid, openldap_uid and all variables for the ansible-user 
+# are comming from basic ansible role
+openldap_gid: 111
+openldap_uid: 111
+openldap_user: openldap
+openldap_group: openldap
+openldap_config_start: '"-F /opt/symas/etc/openldap/slapd.d"'
+openldap_config: '/opt/symas/etc/openldap/slapd.d'
+openldap_options: ''
+ansible_user: ansible
+ansible_uid: 1111
+ansible_group: ansible
+ansible_gid: 1111
+ldap_admin: ldap-admin
+ldap_admin_pw: '{ARGON2}$argon2i$v=19$m=4096,t=3,p=1$ZHdlZmdydGZiaGdkdHZncnRlNDVncnp0ZHZlZmdydGR2ZnJl$/pzRbVwsu3ePx+e6vcsRBSue+t4cFl/BKpvXU9wy4NM'
+repl_user: repl-user
+repl_user_pw: '{ARGON2}$argon2i$v=19$m=4096,t=3,p=1$ZHdlZmdydGZiaGdkdHZncnRlNDVncnp0JMKnwqdncnRkdmZyZQ$loDjLtRt/UQkPayIu84Qzvq5ylDqPXFPQBpvu+GvoqA'
+# ldap top of DIT
+ldap_top: dc=example,dc=net
+# DNS domain name
+dns_name: example.net
+# user=ou and grou=ou are the default ou for new users and groups
+user_ou: users
+group_ou: groups
+ldap_tdl: example
+root_dn: admin
+root_pw: '{ARGON2}$argon2i$v=19$m=4096,t=3,p=1$ZHdlZmdydGYoKSYmJMKnwqdncnRkdmZyZQ$4+CUlVA7b340nJpMtq/y3XnMib1Q3uHs0F7pRkFWbao'
+cn_config_root_pw: '{ARGON2}$argon2i$v=19$m=4096,t=3,p=1$ZHdlZmdydGYoKSYmJSUlJSV6Nzd6Z2poamhqaHJ0ZHZmcmU$fluLSuRBKXO/H/iT1759O3CzqELshGKbJ1cTFz1E+ZU'
+main_repl_pw: geheim
+config_repl_pw: geheim
+# Create your own certificates for your server
+# these certifcates are made with the fqdn *.example.net
+# so they fit to all server
+cert_suffix: -cert.pem
+key_suffix: -key.pem
+tlsca_file: cacert.pem
+cert_dest: /opt/symas/etc/openldap/
+cert_name: ldap-cert.pem
+key_name: ldap-key.pem
+cacert_name: cacert.pem
+# Append list of modules for your needs
+ldap_modules:
+  - back_mdb
+  - back_monitor
+  - autoca.la
+  - otp.la
+  - argon2.la
+  - syncprov
+  - back_monitor
+  - accesslog.la
+# Append list of schema for your needs    
+ldap_schema:
+  - core.ldif
+  - cosine.ldif
+  - nis.ldif
+  - inetorgperson.ldif
+  - dyngroup.ldif
+# Append list of index for your needs    
+ldap_index:
+  -  default eq
+  -  objectClass
+  -  entryUUID
+  -  entryCSN
+  -  cn pres,eq,sub
+  -  uid pres,eq,sub
+  -  mail pres,eq,sub
+  -  sn pres,eq,sub
+  -  description pres,eq,sub
+  -  title pres,eq,sub
+  -  givenName pres,eq,sub
+# The first_server is used to create the initial objects in the main database
+first_server: provider01
+server_id:    
+  - 'ldaps://provider01.example.net'
+  - 'ldaps://provider02.example.net'
+# Database size of 8GB    
+db_max_size: '85899345920'
+db_max_size_access: '85899345920'
+accesslog_purge: '01+00:00  00+04:00'
+ca_key_bits: '4096'
+user_key_bits: '4096'
+server_key_bits: '4096'
+olc_password: '{ARGON2}'
+# Replication parameters
+syncprov_checkpoint: '100 10'
+syncprov_sessionlog: '200'
+repl_retry: '"5 5 100 +"'
+repl_type: refreshAndPersist

@@ -1,0 +1,13 @@
+---
+# ansible_userid and ansible_user_name will have the same value in all my roles
+ansible_userid: "1111"
+ansible_user_name: "ansible"
+# Password created with "mkpasswd -m sha-512 secret"
+ansible_user_pw: "$6$xxXsW7PkKsJ3jPvk$tlkixHKFUA/Sh4VhsuVaTysB0dNpMm6FoKqEynq83SrbdCXjjDmYCaBzFZrQM5bIN2oTSH0p8n1C1r5pV5M.b/"
+# Path to the .ssh-directory of the ansible-user on the ansible-host
+ssh_path: "/home/ansible/.ssh"
+# ssh-key from ansible-user on ansible-host
+ssh_key_src: "/home/ansible/.ssh/id_rsa.pub"
+# Destination of the authorized_keys file on the target host 
+ssh_key_dest: "/home/ansible/.ssh/authorized_keys"
+

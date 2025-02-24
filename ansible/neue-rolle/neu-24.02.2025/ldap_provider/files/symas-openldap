@@ -1,0 +1,10 @@
+SLAPD_URLS="ldap:/// ldapi:/// ldaps:///"
+SLAPD_OPTIONS=""
+SLAPD_USER="openldap"
+SLAPD_GROUP="openldap"
+# Select static "-f" or dynamic "-F"
+STAT_DYN="-F"
+# To use static configuration
+#SLAPD_CONF="/opt/symas/etc/openldap/slapd.conf"
+# To use dynamic configuration 
+SLAPD_CONF="/opt/symas/etc/openldap/slapd.d"
