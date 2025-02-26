@@ -1,0 +1,4 @@
+---
+- hosts: ldap_provider
+  roles:
+    - ldap_provider

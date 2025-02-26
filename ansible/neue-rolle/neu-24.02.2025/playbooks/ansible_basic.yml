@@ -1,0 +1,4 @@
+---
+- hosts: ldap_provider
+  roles:
+    - ansible_basic
